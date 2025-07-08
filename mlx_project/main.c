@@ -92,12 +92,12 @@ int main(void) {
     d.addr = mlx_get_data_addr(d.img, &d.bpp, &d.line, &d.endian);
     for (int i = 0; i < MAP_W * MAP_H; i++)
 	d.map[i] = map_data[i];
-d.px = 2 * GRID + GRID / 2;
-d.py = 2 * GRID + GRID / 2;
-d.pa = 0;
-d.pdx = cos(d.pa);
-d.pdy = sin(d.pa);
-mlx_hook(d.win, 2, 1L << 0, (void*)key_press, keys);
+	d.px = 2 * GRID + GRID / 2;
+	d.py = 2 * GRID + GRID / 2;
+	d.pa = 0;
+	d.pdx = cos(d.pa);
+	d.pdy = sin(d.pa);
+	mlx_hook(d.win, 2, 1L << 0, (void*)key_press, keys);
     mlx_hook(d.win, 3, 1L << 1, (void*)key_release, keys);
     //mlx_key_hook(d.win, handle_key, &d);
 	mlx_loop_hook(d.mlx, update, &d);

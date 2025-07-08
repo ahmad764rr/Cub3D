@@ -3,8 +3,10 @@
 
 #include <mlx.h>
 #include <math.h>
+#include <stdio.h>
 
 #define MAP_W      8
+#define LINE_LENGTH 10
 #define MAP_H      8
 #define GRID       80     // full cell size
 #define TILE       70     // wall-box size inside each cell
@@ -29,9 +31,14 @@ typedef struct s_data {
     int    line;
     int    endian;
     int    map[MAP_W * MAP_H];
+    
     float  px, py;    // player pos
     float  pa;        // player angle
     float  pdx, pdy;  // direction vector
+
+
+
+
 } t_data;
 
 // low-level pixel
@@ -46,7 +53,7 @@ void draw_grid(t_data *d);
 
 // player & ray
 void draw_player(t_data *d);
-void draw_ray(t_data *d, int len, int c);
+void draw_looking(t_data *d, int len, int c);
 
 // composite
 void draw_all(t_data *d);
