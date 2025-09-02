@@ -1,59 +1,65 @@
-// raycaster.c
-// Full merged cub3d + raycasting + minimap engine
+// main.c
+// cub3d + raycasting + minimap + (WSL-proof) keyboard handling
 
-
-#include "mlx.h"
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include "../includes/cub3d.h"
-// Keycodes for X11
-#define KEY_ESC    65307
-#define KEY_W      119
-#define KEY_S      115
-#define KEY_A      97
-#define KEY_D      100
-#define KEY_LEFT   65361
-#define KEY_RIGHT  65363
-#define KEY_UP     65362
-#define KEY_DOWN   65364
+#include "../includes/cub3d.h"   // must (directly or indirectly) include mlx.h
+
+// ─── Cross-platform key helpers (Linux hw keycode | Linux KeySym | mac keycode)
+static int is_key_w(int kc)     { return kc == 25  || kc == 119 || kc == 13; }   // W
+static int is_key_s(int kc)     { return kc == 39  || kc == 115 || kc == 1;  }   // S
+static int is_key_a(int kc)     { return kc == 38  || kc == 97  || kc == 0;  }   // A
+static int is_key_d(int kc)     { return kc == 40  || kc == 100 || kc == 2;  }   // D
+static int is_key_left(int kc)  { return kc == 113 || kc == 65361 || kc == 123; } // ←
+static int is_key_right(int kc) { return kc == 114 || kc == 65363 || kc == 124; } // →
+static int is_key_up(int kc)    { return kc == 111 || kc == 65362 || kc == 126; } // ↑
+static int is_key_down(int kc)  { return kc == 116 || kc == 65364 || kc == 125; } // ↓
+static int is_key_esc(int kc)   { return kc == 65307 || kc == 53; }               // ESC
+// optional: pitch look keys
+static int is_key_r(int kc)     { return kc == 27  || kc == 114 || kc == 15; }    // R
+static int is_key_f(int kc)     { return kc == 41  || kc == 102 || kc == 3;  }    // F
 
 typedef struct s_data {
-    void      *mlx;
-    void      *win;
-    void      *img;
+    void      *mlx, *win, *img;
     char      *addr;
-    int        bpp;
-    int        line_len;
-    int        endian;
+    int        bpp, line_len, endian;
 
-    double     posX, posY;
-    double     dirX, dirY;
-    double     planeX, planeY;
+    double     posX, posY;      // player position (map units)
+    double     dirX, dirY;      // facing direction (unit)
+    double     planeX, planeY;  // camera plane
 
-    int        keys[65536];
+    // action flags (decoupled from raw keycodes)
+    int        act_forward, act_back, act_left, act_right, act_turn_l, act_turn_r;
+    int        look_up, look_down; // optional pitch controls
 
-    t_cub3d   *cub3d;      // parsed map & textures
-    int        mapW, mapH; // map dimensions
-    int        scale;      // pixel size per map cell
-    int        miniW;      // minimap width in px
-    int        viewW;      // 3D view width
-    int        winW, winH; // total window size
+    int        pitch;           // vertical shift of horizon (+down, -up)
+
+    t_cub3d   *cub3d;
+    int        mapW, mapH;
+    int        scale;           // px per cell for minimap (>=1)
+    int        miniW;           // minimap width (px)
+    int        viewW;           // 3D view width (px)
+    int        winW, winH;      // total window size
 } t_data;
 
-// ─── Pixel Helpers ─────────────────────────────────────────────────────────────
-
-static void put_pixel(t_data *d, int x, int y, int color) {
-    if (x < 0 || x >= d->winW || y < 0 || y >= d->winH) return;
+// ─── Pixels & drawing helpers ─────────────────────────────────────────────────
+static inline void put_pixel(t_data *d, int x, int y, int color) {
+    if ((unsigned)x >= (unsigned)d->winW || (unsigned)y >= (unsigned)d->winH) return;
     char *dst = d->addr + (y * d->line_len + x * (d->bpp/8));
-    *(unsigned int*)dst = color;
+    *(unsigned int*)dst = (unsigned int)color;
 }
 
 static void draw_rect(t_data *d, int x, int y, int w, int h, int color) {
-    for (int i = 0; i < w; ++i)
-        for (int j = 0; j < h; ++j)
-            put_pixel(d, x + i, y + j, color);
+    if (w <= 0 || h <= 0) return;
+    int x1 = x + w, y1 = y + h;
+    if (x < 0) x = 0; if (y < 0) y = 0;
+    if (x1 > d->winW) x1 = d->winW;
+    if (y1 > d->winH) y1 = d->winH;
+    for (int yy = y; yy < y1; ++yy)
+        for (int xx = x; xx < x1; ++xx)
+            put_pixel(d, xx, yy, color);
 }
 
 static void draw_line(t_data *d, int x0, int y0, int x1, int y1, int col) {
@@ -69,148 +75,168 @@ static void draw_line(t_data *d, int x0, int y0, int x1, int y1, int col) {
     }
 }
 
-// ─── Input Handling ────────────────────────────────────────────────────────────
-
+// ─── Input (WSL-safe) ────────────────────────────────────────────────────────
 static int key_press(int kc, t_data *d) {
-    if (kc == KEY_ESC)
-        exit(0);
-    d->keys[kc] = 1;
+    if (is_key_esc(kc)) exit(0);
+
+    if (is_key_w(kc) || is_key_up(kc))   d->act_forward = 1;
+    if (is_key_s(kc) || is_key_down(kc)) d->act_back    = 1;
+    if (is_key_a(kc))                    d->act_left    = 1;
+    if (is_key_d(kc))                    d->act_right   = 1;
+    if (is_key_left(kc))                 d->act_turn_l  = 1;
+    if (is_key_right(kc))                d->act_turn_r  = 1;
+
+    if (is_key_r(kc)) d->look_up   = 1;
+    if (is_key_f(kc)) d->look_down = 1;
+
+    // // debug: uncomment to see what WSL sends
+    // fprintf(stderr, "press kc=%d\n", kc);
     return 0;
 }
 
 static int key_release(int kc, t_data *d) {
-    d->keys[kc] = 0;
+    if (is_key_w(kc) || is_key_up(kc))   d->act_forward = 0;
+    if (is_key_s(kc) || is_key_down(kc)) d->act_back    = 0;
+    if (is_key_a(kc))                    d->act_left    = 0;
+    if (is_key_d(kc))                    d->act_right   = 0;
+    if (is_key_left(kc))                 d->act_turn_l  = 0;
+    if (is_key_right(kc))                d->act_turn_r  = 0;
+
+    if (is_key_r(kc)) d->look_up   = 0;
+    if (is_key_f(kc)) d->look_down = 0;
+
+    // fprintf(stderr, "release kc=%d\n", kc);
     return 0;
 }
 
-// ─── Player Movement ───────────────────────────────────────────────────────────
+static int close_game(t_data *d) {
+    (void)d;
+    exit(0);
+    return 0;
+}
 
+// ─── Movement & camera ────────────────────────────────────────────────────────
 static void move_player(t_data *d, double dt) {
-    double ms = dt * 5.0;
-    double rs = dt * 3.0;
+    const double ms = dt * 5.0;  // move speed
+    const double rs = dt * 3.0;  // rot speed
 
     // forward/back
-    if (d->keys[KEY_W] || d->keys[KEY_UP]) {
-        if (d->cub3d->point[(int)d->posY][(int)(d->posX + d->dirX * ms)].access == 0)
-            d->posX += d->dirX * ms;
-        if (d->cub3d->point[(int)(d->posY + d->dirY * ms)][(int)d->posX].access == 0)
-            d->posY += d->dirY * ms;
+    if (d->act_forward) {
+        double nx = d->posX + d->dirX * ms;
+        double ny = d->posY + d->dirY * ms;
+        if (d->cub3d->point[(int)d->posY][(int)nx].access == 0) d->posX = nx;
+        if (d->cub3d->point[(int)ny][(int)d->posX].access == 0) d->posY = ny;
     }
-    if (d->keys[KEY_S] || d->keys[KEY_DOWN]) {
-        if (d->cub3d->point[(int)d->posY][(int)(d->posX - d->dirX * ms)].access == 0)
-            d->posX -= d->dirX * ms;
-        if (d->cub3d->point[(int)(d->posY - d->dirY * ms)][(int)d->posX].access == 0)
-            d->posY -= d->dirY * ms;
+    if (d->act_back) {
+        double nx = d->posX - d->dirX * ms;
+        double ny = d->posY - d->dirY * ms;
+        if (d->cub3d->point[(int)d->posY][(int)nx].access == 0) d->posX = nx;
+        if (d->cub3d->point[(int)ny][(int)d->posX].access == 0) d->posY = ny;
     }
 
     // strafe
-    if (d->keys[KEY_A] || d->keys[KEY_D]) {
-        double factor = d->keys[KEY_A] ?  1 : -1;
-        double sx     = factor * d->dirY * ms;
-        double sy     = factor * -d->dirX * ms;
-        if (d->cub3d->point[(int)d->posY][(int)(d->posX + sx)].access == 0)
-            d->posX += sx;
-        if (d->cub3d->point[(int)(d->posY + sy)][(int)d->posX].access == 0)
-            d->posY += sy;
+    if (d->act_left || d->act_right) {
+        double side = d->act_left ? 1.0 : -1.0;
+        double sx = side * d->dirY * ms;
+        double sy = side * -d->dirX * ms;
+        if (d->cub3d->point[(int)d->posY][(int)(d->posX + sx)].access == 0) d->posX += sx;
+        if (d->cub3d->point[(int)(d->posY + sy)][(int)d->posX].access == 0) d->posY += sy;
     }
 
     // rotate
-    if (d->keys[KEY_LEFT] || d->keys[KEY_RIGHT]) {
-        double ang = (d->keys[KEY_RIGHT] ? -rs : rs);
+    if (d->act_turn_l || d->act_turn_r) {
+        double ang = d->act_turn_r ? -rs : rs;
         double odx = d->dirX, opx = d->planeX;
-        d->dirX   = odx * cos(ang) - d->dirY * sin(ang);
-        d->dirY   = odx * sin(ang) + d->dirY * cos(ang);
-        d->planeX = opx * cos(ang) - d->planeY * sin(ang);
-        d->planeY = opx * sin(ang) + d->planeY * cos(ang);
+        d->dirX   = d->dirX * cos(ang) - d->dirY * sin(ang);
+        d->dirY   = odx      * sin(ang) + d->dirY * cos(ang);
+        d->planeX = d->planeX * cos(ang) - d->planeY * sin(ang);
+        d->planeY = opx      * sin(ang) + d->planeY * cos(ang);
     }
+
+    // optional: look up / down with R/F
+    int pitch_speed = (int)(dt * 600.0);
+    if (d->look_up)   d->pitch -= pitch_speed;
+    if (d->look_down) d->pitch += pitch_speed;
+    int maxP = d->winH/2 - 10;
+    if (d->pitch >  maxP) d->pitch =  maxP;
+    if (d->pitch < -maxP) d->pitch = -maxP;
 }
 
-// ─── Render Loop ───────────────────────────────────────────────────────────────
-
+// ─── Render loop ──────────────────────────────────────────────────────────────
 static int render_frame(void *param) {
-    t_data *d = param;
-    static double last = 0;
+    t_data *d = (t_data*)param;
+    static double last = 0.0;
     double now = (double)clock() / CLOCKS_PER_SEC;
     double dt  = now - last;
+    if (last == 0.0) dt = 0.016;
     last = now;
 
     move_player(d, dt);
 
-    // 1) 2D minimap
-    for (int y = 0; y < d->mapH; y++) {
+    // minimap
+    for (int y = 0; y < d->mapH; y++)
         for (int x = 0; x < d->mapW; x++) {
             int acc = d->cub3d->point[y][x].access;
             int col = acc ? 0x777777 : 0x222222;
             draw_rect(d, x * d->scale, y * d->scale, d->scale, d->scale, col);
         }
-    }
-    // player dot
-    int px = d->posX * d->scale;
-    int py = d->posY * d->scale;
+    int px = (int)(d->posX * d->scale);
+    int py = (int)(d->posY * d->scale);
     draw_rect(d, px - 2, py - 2, 4, 4, 0x00FF00);
 
-    // 2) sky & floor
-    for (int y = 0; y < d->winH / 2; y++)
+    // sky & floor with pitch
+    int horizon = d->winH/2 + d->pitch;
+    if (horizon < 0) horizon = 0;
+    if (horizon > d->winH) horizon = d->winH;
+    for (int y = 0; y < horizon; y++)
         for (int x = d->miniW; x < d->winW; x++)
             put_pixel(d, x, y, 0x87CEEB);
-    for (int y = d->winH / 2; y < d->winH; y++)
+    for (int y = horizon; y < d->winH; y++)
         for (int x = d->miniW; x < d->winW; x++)
             put_pixel(d, x, y, 0x888888);
 
-    // 3) raycast columns
+    // raycast
     for (int col = 0; col < d->viewW; col++) {
-        double camX = 2 * col / (double)d->viewW - 1;
+        double camX = 2.0 * col / (double)d->viewW - 1.0;
         double rayX = d->dirX + d->planeX * camX;
         double rayY = d->dirY + d->planeY * camX;
 
-        int mapX = (int)d->posX;
-        int mapY = (int)d->posY;
-        double dX = fabs(rayX) < 1e-6 ? 1e30 : fabs(1 / rayX);
-        double dY = fabs(rayY) < 1e-6 ? 1e30 : fabs(1 / rayY);
+        int mapX = (int)d->posX, mapY = (int)d->posY;
+        double dX = fabs(rayX) < 1e-9 ? 1e30 : fabs(1.0 / rayX);
+        double dY = fabs(rayY) < 1e-9 ? 1e30 : fabs(1.0 / rayY);
 
-        int stepX = rayX < 0 ? -1 : 1;
-        int stepY = rayY < 0 ? -1 : 1;
-        double sX = (rayX < 0
-                     ? (d->posX - mapX) * dX
-                     : (mapX + 1 - d->posX) * dX);
-        double sY = (rayY < 0
-                     ? (d->posY - mapY) * dY
-                     : (mapY + 1 - d->posY) * dY);
+        int stepX = (rayX < 0) ? -1 : 1;
+        int stepY = (rayY < 0) ? -1 : 1;
+
+        double sX = (rayX < 0) ? (d->posX - mapX) * dX : (mapX + 1.0 - d->posX) * dX;
+        double sY = (rayY < 0) ? (d->posY - mapY) * dY : (mapY + 1.0 - d->posY) * dY;
 
         int hit = 0, side = 0;
         while (!hit) {
-            if (sX < sY) {
-                sX += dX;
-                mapX += stepX;
-                side = 0;
-            } else {
-                sY += dY;
-                mapY += stepY;
-                side = 1;
-            }
-            if (d->cub3d->point[mapY][mapX].access > 0)
-                hit = 1;
+            if (sX < sY) { sX += dX; mapX += stepX; side = 0; }
+            else         { sY += dY; mapY += stepY; side = 1; }
+            if (mapX < 0) mapX = 0;
+            if (mapY < 0) mapY = 0;
+            if (mapX >= d->mapW) mapX = d->mapW - 1;
+            if (mapY >= d->mapH) mapY = d->mapH - 1;
+            if (d->cub3d->point[mapY][mapX].access > 0) hit = 1;
         }
 
-        double perp = (side == 0 ? (sX - dX) : (sY - dY));
+        double perp = (side == 0) ? (sX - dX) : (sY - dY);
 
-        // minimap ray
+        // draw ray on minimap
         double hx = d->posX + rayX * perp;
         double hy = d->posY + rayY * perp;
-        draw_line(d, px, py,
-                  hx * d->scale,
-                  hy * d->scale,
-                  0xFF0000);
+        draw_line(d, px, py, (int)(hx * d->scale), (int)(hy * d->scale), 0xFF0000);
 
-        // slice
+        // vertical slice (with pitch)
         int h = (int)(d->winH / perp);
-        int start = -h/2 + d->winH/2;
-        int end   =  h/2 + d->winH/2;
-        if (start < 0)      start = 0;
-        if (end   >= d->winH) end = d->winH - 1;
+        int start = -h/2 + d->winH/2 + d->pitch;
+        int end   =  h/2 + d->winH/2 + d->pitch;
+        if (start < 0) start = 0;
+        if (end >= d->winH) end = d->winH - 1;
 
-        int color = 0xFFFFFF / d->cub3d->point[mapY][mapX].access;
-        if (side) color >>= 1;
+        int color = side ? 0x888888 : 0xBBBBBB; // placeholder (textures later)
         int sx = d->miniW + col;
         draw_line(d, sx, start, sx, end, color);
     }
@@ -220,77 +246,59 @@ static int render_frame(void *param) {
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
+#define VIEW_W     800
+#define WIN_H      600
+#define WIN_W      1200
+#define MINIMAP_W  400
 
+int main(int argc, char **argv) {
+    if (argc != 2) { ft_putendl_fd(ERO_USA, 2); return 1; }
 
-#define VIEW_W 640   // 3D view width
-#define WIN_H  480   // fixed window height
-
-int main(int argc, char **argv)
-{
-    if (argc != 2) {
-        ft_putendl_fd(ERO_USA, 2);
-        return 1;
-    }
-
-    // Allocate and initialize cub3d struct
-    t_cub3d *cub3d = malloc(sizeof(*cub3d));
+    t_cub3d *cub3d = (t_cub3d*)malloc(sizeof(*cub3d));
     if (!cub3d) return 1;
     init_cub3d(cub3d, argv[1]);
+    if (parsing_manager(&cub3d) == -1) return 1;
 
-    // Parse .cub file (textures, map, colors, etc.)
-    if (parsing_manager(&cub3d) == -1)
-        return 1;
-
-    // Setup rendering data
-    t_data d = {0};
+    t_data d = (t_data){0};
     d.cub3d = cub3d;
     d.mapW  = cub3d->map.map_width;
     d.mapH  = cub3d->map.map_height;
 
-    // Dynamically scale minimap to fit fixed height
-    d.scale = WIN_H / d.mapH;
-    if (d.scale < 1) d.scale = 1;   // at least 1px per cell
-
-    d.miniW = d.mapW * d.scale;
-    d.viewW = VIEW_W;
-    d.winW  = d.miniW + d.viewW;
+    d.winW  = WIN_W;
     d.winH  = WIN_H;
-d.winW  = 800;
-d.winH  = 600;
-d.miniW = 200;  // fixed minimap width
-d.scale = d.miniW / d.mapW;  // adjust scale to fit
-d.viewW = d.winW - d.miniW;
+    d.miniW = MINIMAP_W;
+    d.viewW = d.winW - d.miniW;
 
-    // Initialize MiniLibX
-    d.mlx  = mlx_init();
+    d.scale = (d.mapW > 0) ? (d.miniW / d.mapW) : 1;
+    if (d.scale < 1) d.scale = 1;
+
+    d.pitch = 0;
+
+    // player start
+    d.posX = cub3d->player.map_x + 1.5;
+    d.posY = cub3d->player.map_y + 0.5;
+
+    // face West by default; set by spawn char later if you want
+    d.dirX = -1.0; d.dirY = 0.0;
+    d.planeX = 0.0; d.planeY = 0.66;
+
+    d.mlx = mlx_init();
     if (!d.mlx) { handle_error(ERO_MLX_INIT); return 1; }
-
-    d.win  = mlx_new_window(d.mlx, d.winW, d.winH, "cub3d");
+    d.win = mlx_new_window(d.mlx, d.winW, d.winH, "cub3d");
     if (!d.win) { handle_error(ERO_MLX_WIN); return 1; }
-
-    d.img  = mlx_new_image(d.mlx, d.winW, d.winH);
+    d.img = mlx_new_image(d.mlx, d.winW, d.winH);
     if (!d.img) { handle_error(ERO_MLX_IMG); return 1; }
-
     d.addr = mlx_get_data_addr(d.img, &d.bpp, &d.line_len, &d.endian);
     if (!d.addr) { handle_error(ERO_MLX_ADDR); return 1; }
 
-    // Player starting position
-    d.posX   = cub3d->player.map_x + 0.5;
-    d.posY   = cub3d->player.map_y + 0.5;
-    d.dirX   = -1;
-    d.dirY   = 0;
-    d.planeX = 0;
-    d.planeY = 0.66;
+    mlx_hook(d.win,  2, 1<<0, key_press,   &d);   // KeyPress
+    mlx_hook(d.win,  3, 1<<1, key_release, &d);   // KeyRelease
+    mlx_hook(d.win, 17, 0,    close_game,  &d);   // red-cross
+    mlx_loop_hook(d.mlx, render_frame,     &d);
 
-    // Hook input & rendering
-    mlx_hook(d.win, 2, 1<<0, key_press,   &d);
-    mlx_hook(d.win, 3, 1<<1, key_release, &d);
-    mlx_loop_hook(d.mlx, render_frame,    &d);
-
-    // Start main loop
     mlx_loop(d.mlx);
 
-    // Cleanup on exit (if ever reached)
+    // (usually not reached)
     free_texture(cub3d);
     free_map_points(cub3d);
     free(cub3d);

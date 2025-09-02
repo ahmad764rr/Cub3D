@@ -91,7 +91,7 @@ int main(void) {
     d.img = mlx_new_image(d.mlx, WIDTH, HEIGHT);
     d.addr = mlx_get_data_addr(d.img, &d.bpp, &d.line, &d.endian);
     for (int i = 0; i < MAP_W * MAP_H; i++)
-	d.map[i] = map_data[i];
+	    d.map[i] = map_data[i];
 	d.px = 2 * GRID + GRID / 2;
 	d.py = 2 * GRID + GRID / 2;
 	d.pa = 0;

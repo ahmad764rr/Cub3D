@@ -1,12 +1,16 @@
 # ─── Variables ────────────────────────────────────────────────────────────────
 CC        := cc
-CFLAGS    := -Wall -Wextra -Werror -g -I includes
+CFLAGS    := -g -I includes
+
+MLXDIR    := ./minilibx-linux
+MLX       := $(MLXDIR)/libmlx.a       # use libmlx.a (works on Linux)
+LIBS      := -L$(MLXDIR) -lmlx -lXext -lX11 -lm
+
 LDFLAGS   := -Llibft/printf -lftprintf \
               -Llibft       -lft      \
-              -lmlx -lXext -lX11 -lm
+              $(LIBS)
 
 NAME      := cub3d
-
 SRC_DIR   := srcs
 OBJ_DIR   := includes/build
 
@@ -34,6 +38,7 @@ all: $(NAME)
 $(NAME): $(OBJS) $(HEADERS)
 	@$(MAKE) -C libft/printf
 	@$(MAKE) -C libft
+	@$(MAKE) -C $(MLXDIR)              # build MiniLibX
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
@@ -43,6 +48,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 clean:
 	@$(MAKE) -C libft/printf clean
 	@$(MAKE) -C libft clean
+	@$(MAKE) -C $(MLXDIR) clean
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean

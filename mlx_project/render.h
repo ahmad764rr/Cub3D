@@ -1,7 +1,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include <mlx.h>
+#include "/home/ahmad/Cub3D/minilibx-linux/mlx.h"
 #include <math.h>
 #include <stdio.h>
 

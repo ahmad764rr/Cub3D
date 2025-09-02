@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:06:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/07/15 19:19:49 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/02 17:04:03 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	set_map_values(t_cub3d **cub3d, char *line, int y)
 		if (line[x] == ' ')
 			(*cub3d)->point[y][x].access = 0;
 		else if (line[x] == 'N')
-			(*cub3d)->point[y][x].access = 2;
+			(*cub3d)->point[y][x].access = 0;
 		else
 			(*cub3d)->point[y][x].access = line[x] - '0';
 		(*cub3d)->point[y][x].x = x;
