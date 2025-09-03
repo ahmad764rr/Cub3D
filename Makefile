@@ -3,7 +3,7 @@ CC        := cc
 CFLAGS    := -g -I includes
 
 MLXDIR    := ./minilibx-linux
-MLX       := $(MLXDIR)/libmlx.a       # use libmlx.a (works on Linux)
+MLX       := $(MLXDIR)/libmlx.a
 LIBS      := -L$(MLXDIR) -lmlx -lXext -lX11 -lm
 
 LDFLAGS   := -Llibft/printf -lftprintf \
@@ -24,7 +24,17 @@ SRCS := \
     setup_map.c        \
     flood_fill.c       \
     setting_data.c     \
-    color_handler.c
+    color_handler.c\
+ 	ovl_pixels.c \
+ 	ovl_draw.c \
+	ovl_key.c \
+	key_diff.c\
+	movement.c\
+ 	ovl_sky.c    \
+ 	ovl_raycast.c\
+ 	ovl_minimap.c\
+	render_frame.c\
+	init.c
 
 SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

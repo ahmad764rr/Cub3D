@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:49:09 by nqasem            #+#    #+#             */
-/*   Updated: 2025/07/15 19:15:06 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/03 14:12:41 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,41 +63,6 @@ int	handle_read_file(t_cub3d **cub3d, int *is_complete)
 	return (0);
 }
 
-/* void	print(t_cub3d *cub3d)
-{
-	int	i;
-	int	j;
-
-	for (i = 0; i < cub3d->map.map_height; i++)
-	{
-		for (j = 0; j < cub3d->map.map_width; j++)
-		{
-			printf("%d ", cub3d->point[i][j].access);
-		}
-		printf("\n");
-	}
-	for (i = 0; i < cub3d->map.map_height; i++)
-	{
-		for (j = 0; j < cub3d->map.map_width; j++)
-		{
-			printf("(%d, %d)", cub3d->point[i][j].x, cub3d->point[i][j].y);
-		}
-		printf("\n");
-	}
-	printf("texture_north: %s\n", cub3d->map.texture_north);
-	printf("texture_south: %s\n", cub3d->map.texture_south);
-	printf("texture_west: %s\n", cub3d->map.texture_west);
-	printf("texture_east: %s\n", cub3d->map.texture_east);
-	printf("length of map: %d\n", cub3d->map.map_width);
-	printf("height of map: %d\n", cub3d->map.map_height);
-	printf("Player position: (%d, %d)\n", cub3d->player.map_x
-	 , cub3d->player.map_y);
-	printf("floor (%d, %d, %d)\n", cub3d->map.color_floor.r
-	, cub3d->map.color_floor.g, cub3d->map.color_floor.b);
-	printf("Cell (%d, %d, %d)\n", cub3d->map.color_ceiling.r,
-	 cub3d->map.color_ceiling.g, cub3d->map.color_ceiling.b);
-}
- */
 void	free_texture(t_cub3d *cub3d)
 {
 	if (cub3d->map.texture_north)
@@ -127,8 +92,6 @@ int	read_file(t_cub3d **cub3d)
 		free_map_points(*cub3d);
 		return (-1);
 	}
-	//free_texture(*cub3d);
-	//free_map_points(*cub3d);
 	printf("Parsing completed successfully.\n");
 	return (0);
 }
