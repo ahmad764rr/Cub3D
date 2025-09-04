@@ -6,19 +6,23 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:20:00 by ahramada          #+#    #+#             */
-/*   Updated: 2025/09/04 13:42:43 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/04 14:06:41 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/overlay.h"
 
-void	cast_init(t_data *d, t_cast *c, int col)
+void	cast_init_ray(t_data *d, t_cast *c, int col)
 {
 	c->cam_x = 2.0 * col / (double)d->win_w - 1.0;
 	c->rx = d->dir_x + d->plane_x * c->cam_x;
 	c->ry = d->dir_y + d->plane_y * c->cam_x;
 	c->map_x = (int)d->pos_x;
 	c->map_y = (int)d->pos_y;
+}
+
+void	cast_init_dda(t_data *d, t_cast *c)
+{
 	if (fabs(c->rx) < 1e-9)
 		c->dx = 1e30;
 	else
@@ -46,13 +50,8 @@ void	cast_init(t_data *d, t_cast *c, int col)
 	c->side = 0;
 }
 
-void	cast_step_to_hit(t_data *d, t_cast *c)
+void	cast_step_to_hit_check(t_data *d, t_cast *c, int *hit)
 {
-	int	hit;
-
-	hit = 0;
-	while (!hit)
-	{
 		if (c->sx < c->sy)
 		{
 			c->sx += c->dx;
@@ -74,8 +73,16 @@ void	cast_step_to_hit(t_data *d, t_cast *c)
 		if (c->map_y >= d->map_h)
 			c->map_y = d->map_h - 1;
 		if (d->c3d->point[c->map_y][c->map_x].access > 0)
-			hit = 1;
-	}
+			*hit = 1;
+}
+
+void	cast_step_to_hit(t_data *d, t_cast *c)
+{
+	int	hit;
+
+	hit = 0;
+	while (!hit)
+		cast_step_to_hit_check(d, c, &hit);
 	if (c->side == 0)
 		c->perp = c->sx - c->dx;
 	else
@@ -111,7 +118,8 @@ void	cast_and_draw_column(t_data *d, int col)
 {
 	t_cast	c;
 
-	cast_init(d, &c, col);
+	cast_init_ray(d, &c, col);
+	cast_init_dda(d, &c);
 	cast_step_to_hit(d, &c);
 	draw_slice_store_hit(d, &c, col);
 }
