@@ -127,8 +127,14 @@ void set_line_clip_data(int xy01_[], int dsxy[], int xy01[])
 	xy01_[3] = xy01[3];
 	dsxy[0] = abs(xy01_[2] - xy01_[0]);
 	dsxy[1] = -abs(xy01_[3] - xy01_[1]);
-	dsxy[2] = (xy01_[0] < xy01_[2]) ? 1 : -1;
-	dsxy[3] = (xy01_[1] < xy01_[3]) ? 1 : -1;
+	if (xy01_[0] < xy01_[2])
+		dsxy[2] = 1;
+	else
+		dsxy[2] = -1;
+	if (xy01_[1] < xy01_[3])
+		dsxy[3] = 1;
+	else
+		dsxy[3] = -1;
 }
 
 void	_set_line_clip_data2(int rxywh[], int dsxy[], t_data *d, int err[])
