@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_frame.c                                        :+:      :+:    :+:   */
+/*   render_frame.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/03 13:05:25 by ahramada         ###   ########.fr       */
+/*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
+/*   Updated: 2025/09/04 14:13:13 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	render_frame(void *param)
 	while (++col < d->win_w)
 		cast_and_draw_column(d, col);
 	draw_minimap_overlay(d);
-	mlx_put_image_to_window(d->mlx, d->win, d->img, 0, 0);
+	mlx_put_image_to_window(d->mlx,
+		d->win, d->img, 0, 0);
 	return (0);
 }
