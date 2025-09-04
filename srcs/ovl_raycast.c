@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:20:00 by ahramada          #+#    #+#             */
-/*   Updated: 2025/09/04 14:06:41 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/04 14:21:35 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,28 @@ void	cast_init_dda(t_data *d, t_cast *c)
 
 void	cast_step_to_hit_check(t_data *d, t_cast *c, int *hit)
 {
-		if (c->sx < c->sy)
-		{
-			c->sx += c->dx;
-			c->map_x += c->step_x;
-			c->side = 0;
-		}
-		else
-		{
-			c->sy += c->dy;
-			c->map_y += c->step_y;
-			c->side = 1;
-		}
-		if (c->map_x < 0)
-			c->map_x = 0;
-		if (c->map_y < 0)
-			c->map_y = 0;
-		if (c->map_x >= d->map_w)
-			c->map_x = d->map_w - 1;
-		if (c->map_y >= d->map_h)
-			c->map_y = d->map_h - 1;
-		if (d->c3d->point[c->map_y][c->map_x].access > 0)
-			*hit = 1;
+	if (c->sx < c->sy)
+	{
+		c->sx += c->dx;
+		c->map_x += c->step_x;
+		c->side = 0;
+	}
+	else
+	{
+		c->sy += c->dy;
+		c->map_y += c->step_y;
+		c->side = 1;
+	}
+	if (c->map_x < 0)
+		c->map_x = 0;
+	if (c->map_y < 0)
+		c->map_y = 0;
+	if (c->map_x >= d->map_w)
+		c->map_x = d->map_w - 1;
+	if (c->map_y >= d->map_h)
+		c->map_y = d->map_h - 1;
+	if (d->c3d->point[c->map_y][c->map_x].access > 0)
+		*hit = 1;
 }
 
 void	cast_step_to_hit(t_data *d, t_cast *c)
