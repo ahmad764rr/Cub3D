@@ -69,36 +69,51 @@ void	draw_rect_blend(t_data *d, int x, int y, int w, int h,
 	}
 }
 
-void	draw_line(t_data *d, int x0, int y0, int x1, int y1, unsigned int c)
+void set_data_draw_line(int xy01[], int dsxy[], int x01, int y01[])
 {
-	int dsxy[4];
-	int	err;
-	int	e2;
+	xy01[0] = x01;
+	xy01[1] = y01[0];
+	xy01[2] = x01;
+	xy01[3] = y01[1];
+	dsxy[0] = abs(xy01[2] - xy01[0]);
+	dsxy[1] = -abs(xy01[3] - xy01[1]);
+	dsxy[2] = (xy01[0] < xy01[2]);
+	dsxy[3] = (xy01[1] < xy01[3]);
+}
 
-	dsxy[0] = abs(x1 - x0);
-	dsxy[1] = -abs(y1 - y0);
-	dsxy[2] = (x0 < x1);
-	dsxy[3] = (y0 < y1);
+void check_data_draw_line(int dsxy[], int *err)
+{
 	if (!dsxy[2])
 		dsxy[2] = -1;
 	if (!dsxy[3])
 		dsxy[3] = -1;
-	err = dsxy[0] + dsxy[1];
+	*err = dsxy[0] + dsxy[1];
+}
+
+void	draw_line(t_data *d, int x01, int y01[], unsigned int c)
+{
+	int dsxy[4];
+	int xy01[4];
+	int	err;
+	int	e2;
+
+	set_data_draw_line(xy01, dsxy, x01, y01);
+	check_data_draw_line(dsxy, &err);
 	while (1)
 	{
-		put_pixel(d, x0, y0, c);
-		if (x0 == x1 && y0 == y1)
+		put_pixel(d, xy01[0], xy01[1], c);
+		if (xy01[0] == xy01[2] && xy01[1] == xy01[3])
 			break ;
 		e2 = 2 * err;
 		if (e2 >= dsxy[1])
 		{
 			err += dsxy[1];
-			x0 += dsxy[2];
+			xy01[0] += dsxy[2];
 		}
 		if (e2 <= dsxy[0])
 		{
 			err += dsxy[0];
-			y0 += dsxy[3];
+			xy01[1] += dsxy[3];
 		}
 	}
 }

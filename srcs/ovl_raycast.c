@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ovl_raycast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:20:00 by ahramada          #+#    #+#             */
-/*   Updated: 2025/09/03 14:11:55 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 13:42:43 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,25 +84,25 @@ void	cast_step_to_hit(t_data *d, t_cast *c)
 
 void	draw_slice_store_hit(t_data *d, t_cast *c, int col)
 {
+	int				start_end[2];
 	int				h;
 	int				start;
-	int				end;
 	unsigned int	color;
 
 	if (c->perp < 1e-6)
 		c->perp = 1e-6;
 	h = (int)(d->win_h / c->perp);
-	start = -h / 2 + d->win_h / 2 + d->pitch;
-	end = h / 2 + d->win_h / 2 + d->pitch;
-	if (start < 0)
-		start = 0;
-	if (end >= d->win_h)
-		end = d->win_h - 1;
+	start_end[0] = -h / 2 + d->win_h / 2 + d->pitch;
+	start_end[1] = h / 2 + d->win_h / 2 + d->pitch;
+	if (start_end[0] < 0)
+		start_end[0] = 0;
+	if (start_end[1] >= d->win_h)
+		start_end[1] = d->win_h - 1;
 	if (c->side)
 		color = 0x888888;
 	else
 		color = 0xBBBBBB;
-	draw_line(d, col, start, col, end, color);
+	draw_line(d, col, start_end, color);
 	d->hit_x[col] = d->pos_x + c->rx * c->perp;
 	d->hit_y[col] = d->pos_y + c->ry * c->perp;
 }
