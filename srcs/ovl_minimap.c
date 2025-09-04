@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 14:26:17 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/04 17:52:49 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,21 @@ void	mm_draw_cells(t_data *d)
 {
 	int				y;
 	int				x;
-	int				rx;
-	int				ry;
+	int				rxywh[4];
 	unsigned int	col;
 
 	y = -1;
+	rxywh[2] = d->mm_scale;
+	rxywh[3] = d->mm_scale;
 	while (++y < d->map_h)
 	{
 		x = -1;
 		while (++x < d->map_w)
 		{
 			set_cell_color(d->c3d->point[y][x].access, &col);
-			rx = d->mm_x + x * d->mm_scale;
-			ry = d->mm_y + y * d->mm_scale;
-			draw_rect_blend(d, rx, ry, d->mm_scale,
-				d->mm_scale, col, MINI_CELL_A);
+			rxywh[0] = d->mm_x + x * d->mm_scale;
+			rxywh[1] = d->mm_y + y * d->mm_scale;
+			draw_rect_blend(d, rxywh, col, MINI_CELL_A);
 		}
 	}
 }
@@ -73,65 +73,18 @@ void	mm_draw_cells(t_data *d)
 void	mm_draw_player_and_head(t_data *d, int *px, int *py)
 {
 	int	phxy[4];
+	int	xywh[4];
 
 	*px = d->mm_x + (int)(d->pos_x * d->mm_scale);
 	*py = d->mm_y + (int)(d->pos_y * d->mm_scale);
-	draw_rect(d, *px - MINI_DOT_SZ / 2, *py - MINI_DOT_SZ / 2,
-		MINI_DOT_SZ, MINI_DOT_SZ, 0x00FF00);
+	xywh[0] = *px - MINI_DOT_SZ / 2;
+	xywh[1] = *py - MINI_DOT_SZ / 2;
+	xywh[2] = MINI_DOT_SZ;
+	xywh[3] = MINI_DOT_SZ;
+	draw_rect(d, xywh, 0x00FF00);
 	phxy[2] = *px + (int)(d->dir_x * MINI_HEADLEN);
 	phxy[3] = *py + (int)(d->dir_y * MINI_HEADLEN);
 	phxy[0] = *px;
 	phxy[1] = *py;
 	draw_line_clip(d, phxy, 0x00FF00);
-}
-
-void	mm_draw_rays(t_data *d, int px, int py)
-{
-	int		ptxy[4];
-	int		col;
-
-	ptxy[0] = px;
-	ptxy[1] = py;
-	col = 0;
-	while (col < d->win_w)
-	{
-		ptxy[2] = d->mm_x + (int)(d->hit_x[col] * d->mm_scale);
-		ptxy[3] = d->mm_y + (int)(d->hit_y[col] * d->mm_scale);
-		draw_line_clip(d, ptxy, MINI_RAY_COL);
-		col += MINI_RAY_STEP;
-	}
-}
-
-void	mm_draw_border(t_data *d)
-{
-	int	x;
-	int	y;
-
-	x = d->mm_x - 2;
-	while (x < d->mm_x + d->mm_w + 2)
-	{
-		put_pixel(d, x, d->mm_y - 2, 0xFFFFFF);
-		put_pixel(d, x, d->mm_y + d->mm_h + 1, 0xFFFFFF);
-		x++;
-	}
-	y = d->mm_y - 2;
-	while (y < d->mm_y + d->mm_h + 2)
-	{
-		put_pixel(d, d->mm_x - 2, y, 0xFFFFFF);
-		put_pixel(d, d->mm_x + d->mm_w + 1, y, 0xFFFFFF);
-		y++;
-	}
-}
-
-void	draw_minimap_overlay(t_data *d)
-{
-	int	px;
-	int	py;
-
-	draw_rect_blend(d, d->mm_x - 2, d->mm_y - 2,
-		d->mm_w + 4, d->mm_h + 4, 0x000000, MINI_BG_A);
-	mm_draw_cells(d);
-	mm_draw_player_and_head(d, &px, &py);
-	mm_draw_rays(d, px, py);
-	mm_draw_border(d);
 }

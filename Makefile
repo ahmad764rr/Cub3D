@@ -15,25 +15,30 @@ SRC_DIR   := srcs
 OBJ_DIR   := includes/build
 
 SRCS := \
-    parsing.c          \
-    cub3d_handling.c   \
-    main.c             \
-    utils.c            \
-    check_data.c       \
-    check_map.c        \
-    setup_map.c        \
-    flood_fill.c       \
-    setting_data.c     \
-    color_handler.c\
- 	ovl_pixels.c \
- 	ovl_draw.c \
-	ovl_key.c \
-	key_diff.c\
-	movement.c\
- 	ovl_sky.c    \
- 	ovl_raycast.c\
- 	ovl_minimap.c\
-	render_frame.c\
+    parsing.c          	\
+    cub3d_handling.c   	\
+    main.c             	\
+    utils.c            	\
+    check_data.c       	\
+    check_map.c        	\
+    setup_map.c        	\
+    flood_fill.c       	\
+    setting_data.c     	\
+    color_handler.c		\
+ 	ovl_pixels.c 		\
+ 	ovl_draw.c 			\
+ 	ovl_draw2.c 		\
+	ovl_key.c 			\
+	key_diff.c			\
+	key_diff2.c			\
+	key_diff3.c			\
+	movement.c			\
+ 	ovl_sky.c   		\
+ 	ovl_raycast.c		\
+ 	ovl_raycast2.c		\
+ 	ovl_minimap.c		\
+ 	ovl_minimap2.c		\
+	render_frame.c		\
 	init.c
 
 SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))

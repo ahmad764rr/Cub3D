@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "../includes/overlay.h"
+#include <math.h>
 
 void	move_fwd_back(t_data *d, double ms)
 {

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "../includes/overlay.h"
+#include <math.h>
 
 int	key_press(int kc, t_data *d)
 {

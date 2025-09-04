@@ -36,8 +36,7 @@ unsigned int	get_pixel(t_data *d, int x, int y)
 	return (*(unsigned int *)src);
 }
 
-unsigned int	blend_rgb(unsigned int dst, unsigned int src,
-	double a)
+unsigned int	blend_rgb(unsigned int dst, unsigned int src, double a)
 {
 	unsigned int	drgb[3];
 	unsigned int	srgb[3];
@@ -54,8 +53,7 @@ unsigned int	blend_rgb(unsigned int dst, unsigned int src,
 	return ((drgb[0] << 16) | (drgb[1] << 8) | drgb[2]);
 }
 
-void	put_pixel_blend(t_data *d, int xy[],
-	unsigned int color, double a)
+void	put_pixel_blend(t_data *d, int xy[], unsigned int color, double a)
 {
 	unsigned int	dst;
 	unsigned int	out;

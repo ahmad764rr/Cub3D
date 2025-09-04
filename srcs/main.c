@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "../includes/cub3d.h"
 #include "../includes/overlay.h"
+#include <stdlib.h>
 
 static int	alloc_c3d(t_cub3d **c3d)
 {

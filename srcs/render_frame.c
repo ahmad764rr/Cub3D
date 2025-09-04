@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/cub3d.h"
+#include "../includes/overlay.h"
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include "../includes/cub3d.h"
-#include "../includes/overlay.h"
 
 int	render_frame(void *param)
 {
@@ -38,7 +38,6 @@ int	render_frame(void *param)
 	while (++col < d->win_w)
 		cast_and_draw_column(d, col);
 	draw_minimap_overlay(d);
-	mlx_put_image_to_window(d->mlx,
-		d->win, d->img, 0, 0);
+	mlx_put_image_to_window(d->mlx, d->win, d->img, 0, 0);
 	return (0);
 }

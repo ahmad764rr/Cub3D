@@ -83,8 +83,8 @@ int	check_map_searching_2(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 
 int	check_map_searching(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 {
-	int		ret;
-	int		i;
+	int	ret;
+	int	i;
 
 	i = 0;
 	(*cub3d)->is_empty = 0;

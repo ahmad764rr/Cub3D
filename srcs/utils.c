@@ -33,8 +33,8 @@ void	check_name(t_cub3d *cub3d)
 	}
 	while (arg[i])
 		i++;
-	if (arg[i - 1] != 'b' || arg[i - 2] != 'u' || arg[i - 3] != 'c' || arg[i
-			- 4] != '.')
+	if (arg[i - 1] != 'b' || arg[i - 2] != 'u' || arg[i - 3] != 'c'
+		|| arg[i - 4] != '.')
 	{
 		cub3d->flag = 1;
 		handle_error(ERO_NAME_FILE);
