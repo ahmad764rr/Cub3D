@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ovl_minimap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/03 14:09:21 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 13:03:07 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,32 +72,32 @@ void	mm_draw_cells(t_data *d)
 
 void	mm_draw_player_and_head(t_data *d, int *px, int *py)
 {
-	int	hx;
-	int	hy;
+	int phxy[4];
 
 	*px = d->mm_x + (int)(d->pos_x * d->mm_scale);
 	*py = d->mm_y + (int)(d->pos_y * d->mm_scale);
 	draw_rect(d, *px - MINI_DOT_SZ / 2, *py - MINI_DOT_SZ / 2,
 		MINI_DOT_SZ, MINI_DOT_SZ, 0x00FF00);
-	hx = *px + (int)(d->dir_x * MINI_HEADLEN);
-	hy = *py + (int)(d->dir_y * MINI_HEADLEN);
-	draw_line_clip(d, *px, *py, hx, hy, 0x00FF00,
-		d->mm_x, d->mm_y, d->mm_w, d->mm_h);
+	phxy[2] = *px + (int)(d->dir_x * MINI_HEADLEN);
+	phxy[3] = *py + (int)(d->dir_y * MINI_HEADLEN);
+	phxy[0] = *px;
+	phxy[1] = *py;
+	draw_line_clip(d, phxy[0], phxy[1], phxy[2], phxy[3], 0x00FF00);
 }
 
 void	mm_draw_rays(t_data *d, int px, int py)
 {
+	int ptxy[4];
 	int	col;
-	int	tx;
-	int	ty;
 
+	ptxy[0] = px;
+	ptxy[1] = py;
 	col = 0;
 	while (col < d->win_w)
 	{
-		tx = d->mm_x + (int)(d->hit_x[col] * d->mm_scale);
-		ty = d->mm_y + (int)(d->hit_y[col] * d->mm_scale);
-		draw_line_clip(d, px, py, tx, ty, MINI_RAY_COL,
-			d->mm_x, d->mm_y, d->mm_w, d->mm_h);
+		ptxy[2] = d->mm_x + (int)(d->hit_x[col] * d->mm_scale);
+		ptxy[3] = d->mm_y + (int)(d->hit_y[col] * d->mm_scale);
+		draw_line_clip(d, ptxy[0], ptxy[1], ptxy[2], ptxy[3], MINI_RAY_COL);
 		col += MINI_RAY_STEP;
 	}
 }

@@ -107,36 +107,38 @@ void	draw_line(t_data *d, int x0, int y0, int x1, int y1, unsigned int c)
 }
 
 void	draw_line_clip(t_data *d, int x0, int y0, int x1, int y1,
-	unsigned int c, int rx, int ry, int rw, int rh)
+	unsigned int c)
 {
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
+	int dsxy[4];
+	int rxywh[4];
 	int	err;
 	int	e2;
 
-	dx = abs(x1 - x0);
-	dy = -abs(y1 - y0);
-	sx = (x0 < x1) ? 1 : -1;
-	sy = (y0 < y1) ? 1 : -1;
-	err = dx + dy;
+	dsxy[0] = abs(x1 - x0);
+	dsxy[1] = -abs(y1 - y0);
+	dsxy[2] = (x0 < x1) ? 1 : -1;
+	dsxy[3] = (y0 < y1) ? 1 : -1;
+	rxywh[0] = d->mm_x;
+	rxywh[1] = d->mm_y;
+	rxywh[2] = d->mm_w;
+	rxywh[3] = d->mm_h;
+	err = dsxy[0] + dsxy[1];
 	while (1)
 	{
-		if (x0 >= rx && x0 < rx + rw && y0 >= ry && y0 < ry + rh)
+		if (x0 >= rxywh[0] && x0 < rxywh[0] + rxywh[2] && y0 >= rxywh[1] && y0 < rxywh[1] + rxywh[3])
 			put_pixel(d, x0, y0, c);
 		if (x0 == x1 && y0 == y1)
 			break ;
 		e2 = 2 * err;
-		if (e2 >= dy)
+		if (e2 >= dsxy[1])
 		{
-			err += dy;
-			x0 += sx;
+			err += dsxy[1];
+			x0 += dsxy[2];
 		}
-		if (e2 <= dx)
+		if (e2 <= dsxy[0])
 		{
-			err += dx;
-			y0 += sy;
+			err += dsxy[0];
+			y0 += dsxy[3];
 		}
 	}
 }
