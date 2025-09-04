@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/04 13:03:07 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/04 13:04:40 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	mm_draw_player_and_head(t_data *d, int *px, int *py)
 	phxy[3] = *py + (int)(d->dir_y * MINI_HEADLEN);
 	phxy[0] = *px;
 	phxy[1] = *py;
-	draw_line_clip(d, phxy[0], phxy[1], phxy[2], phxy[3], 0x00FF00);
+	draw_line_clip(d, phxy, 0x00FF00);
 }
 
 void	mm_draw_rays(t_data *d, int px, int py)
@@ -97,7 +97,7 @@ void	mm_draw_rays(t_data *d, int px, int py)
 	{
 		ptxy[2] = d->mm_x + (int)(d->hit_x[col] * d->mm_scale);
 		ptxy[3] = d->mm_y + (int)(d->hit_y[col] * d->mm_scale);
-		draw_line_clip(d, ptxy[0], ptxy[1], ptxy[2], ptxy[3], MINI_RAY_COL);
+		draw_line_clip(d, ptxy, MINI_RAY_COL);
 		col += MINI_RAY_STEP;
 	}
 }
