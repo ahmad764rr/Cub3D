@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 14:13:13 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/04 14:25:28 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,19 @@ unsigned int	get_pixel(t_data *d, int x, int y)
 unsigned int	blend_rgb(unsigned int dst, unsigned int src,
 	double a)
 {
-	unsigned int	dr;
-	unsigned int	dg;
-	unsigned int	db;
-	unsigned int	sr;
-	unsigned int	sg;
-	unsigned int	sb;
+	unsigned int	drgb[3];
+	unsigned int	srgb[3];
 
-	dr = (dst >> 16) & 0xFF;
-	dg = (dst >> 8) & 0xFF;
-	db = dst & 0xFF;
-	sr = (src >> 16) & 0xFF;
-	sg = (src >> 8) & 0xFF;
-	sb = src & 0xFF;
-	dr = (unsigned int)(sr * a + dr * (1.0 - a));
-	dg = (unsigned int)(sg * a + dg * (1.0 - a));
-	db = (unsigned int)(sb * a + db * (1.0 - a));
-	return ((dr << 16) | (dg << 8) | db);
+	drgb[0] = (dst >> 16) & 0xFF;
+	drgb[1] = (dst >> 8) & 0xFF;
+	drgb[2] = dst & 0xFF;
+	srgb[0] = (src >> 16) & 0xFF;
+	srgb[1] = (src >> 8) & 0xFF;
+	srgb[2] = src & 0xFF;
+	drgb[0] = (unsigned int)(srgb[0] * a + drgb[0] * (1.0 - a));
+	drgb[1] = (unsigned int)(srgb[1] * a + drgb[1] * (1.0 - a));
+	drgb[2] = (unsigned int)(srgb[2] * a + drgb[2] * (1.0 - a));
+	return ((drgb[0] << 16) | (drgb[1] << 8) | drgb[2]);
 }
 
 void	put_pixel_blend(t_data *d, int xy[],

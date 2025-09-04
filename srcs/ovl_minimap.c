@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 14:13:13 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/04 14:26:17 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	mm_draw_cells(t_data *d)
 
 void	mm_draw_player_and_head(t_data *d, int *px, int *py)
 {
-	int phxy[4];
+	int	phxy[4];
 
 	*px = d->mm_x + (int)(d->pos_x * d->mm_scale);
 	*py = d->mm_y + (int)(d->pos_y * d->mm_scale);
@@ -87,8 +87,8 @@ void	mm_draw_player_and_head(t_data *d, int *px, int *py)
 
 void	mm_draw_rays(t_data *d, int px, int py)
 {
-	int ptxy[4];
-	int	col;
+	int		ptxy[4];
+	int		col;
 
 	ptxy[0] = px;
 	ptxy[1] = py;
