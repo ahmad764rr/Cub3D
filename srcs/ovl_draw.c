@@ -43,6 +43,7 @@ void	draw_rect(t_data *d, int x, int y, int w, int h, unsigned int c)
 void	draw_rect_blend(t_data *d, int x, int y, int w, int h,
 	unsigned int c, double a)
 {
+	int xx_yy[2];
 	int	xx;
 	int	yy;
 	int	x1;
@@ -60,12 +61,12 @@ void	draw_rect_blend(t_data *d, int x, int y, int w, int h,
 		x1 = d->win_w;
 	if (y1 > d->win_h)
 		y1 = d->win_h;
-	yy = y - 1;
-	while (++yy < y1)
+	xx_yy[1] = y - 1;
+	while (++xx_yy[1] < y1)
 	{
-		xx = x - 1;
-		while (++xx < x1)
-			put_pixel_blend(d, xx, yy, c, a);
+		xx_yy[0] = x - 1;
+		while (++xx_yy[0] < x1)
+			put_pixel_blend(d, xx_yy, c, a);
 	}
 }
 

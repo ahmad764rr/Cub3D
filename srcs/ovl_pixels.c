@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ovl_pixels.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/03 14:10:49 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 13:54:26 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ unsigned int	blend_rgb(unsigned int dst, unsigned int src,
 	return ((dr << 16) | (dg << 8) | db);
 }
 
-void	put_pixel_blend(t_data *d, int x, int y,
+void	put_pixel_blend(t_data *d, int xy[],
 	unsigned int color, double a)
 {
 	unsigned int	dst;
 	unsigned int	out;
 
-	if ((unsigned)x >= (unsigned)d->win_w
-		|| (unsigned)y >= (unsigned)d->win_h)
+	if ((unsigned)xy[0] >= (unsigned)d->win_w
+		|| (unsigned)xy[1] >= (unsigned)d->win_h)
 		return ;
-	dst = get_pixel(d, x, y);
+	dst = get_pixel(d, xy[0], xy[1]);
 	out = blend_rgb(dst, color, a);
-	put_pixel(d, x, y, out);
+	put_pixel(d, xy[0], xy[1], out);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   overlay.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/03 14:05:38 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 13:56:07 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	put_pixel(t_data *d, int x, int y, unsigned int color);
 unsigned int	get_pixel(t_data *d, int x, int y);
 unsigned int	blend_rgb(unsigned int dst, unsigned int src,
 	double a);
-	void	put_pixel_blend(t_data *d, int x, int y,
+	void	put_pixel_blend(t_data *d, int xy[],
 	unsigned int color, double a);
 
 	int	key_press(int kc, t_data *d);
