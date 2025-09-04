@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:49:09 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/03 14:12:41 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:53:11 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	read_file(t_cub3d **cub3d)
 		handle_error(ERO_MAP);
 		return (-1);
 	}
+	close((*cub3d)->fd);
 	if (setup_flood_fill(*cub3d) == -1)
 	{
 		free_texture(*cub3d);

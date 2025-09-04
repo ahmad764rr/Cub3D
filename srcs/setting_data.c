@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setting_data.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 21:08:29 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/02 16:55:07 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:49:36 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ int	map_status(t_cub3d **cub3d)
 	if (handle_read_file(cub3d, &is_complete) == -1)
 	{
 		free_texture(*cub3d);
+		close((*cub3d)->fd);
 		return (-1);
 	}
 	if (is_complete != 6 || (*cub3d)->map.map_height == -1)
 	{
 		free_texture(*cub3d);
 		check_data_error(cub3d, ERO_MAP, 6);
+		close((*cub3d)->fd);
 		return (-1);
 	}
 	return (0);

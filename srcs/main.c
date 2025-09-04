@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/03 13:36:09 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:01:32 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static int	alloc_c3d(t_cub3d **c3d)
 static int	setup_game(t_data *d, t_cub3d *c3d, char *path)
 {
 	if (init_cub3d(c3d, path), parsing_manager(&c3d) == -1)
-		return (1);
+	{
+		free(c3d);
+		exit(1);
+	}
 	*d = (t_data){0};
 	d->c3d = c3d;
 	d->map_w = c3d->map.map_width;
