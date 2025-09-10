@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:00:04 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/02 16:55:08 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:45:11 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 int	ft_isspace(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
 }
 
+/*
+** Ensure given map file exists, is readable,
+** and ends with ".cub".
+*/
 void	check_name(t_cub3d *cub3d)
 {
 	char	*arg;
@@ -33,8 +37,8 @@ void	check_name(t_cub3d *cub3d)
 	}
 	while (arg[i])
 		i++;
-	if (arg[i - 1] != 'b' || arg[i - 2] != 'u' || arg[i - 3] != 'c'
-		|| arg[i - 4] != '.')
+	if (arg[i - 1] != 'b' || arg[i - 2] != 'u'
+		|| arg[i - 3] != 'c' || arg[i - 4] != '.')
 	{
 		cub3d->flag = 1;
 		handle_error(ERO_NAME_FILE);
@@ -42,45 +46,26 @@ void	check_name(t_cub3d *cub3d)
 	}
 }
 
+/*
+** Trim path and check read access.
+** Returns 0 if ok, -1 if not accessible.
+*/
 int	check_access(char *line)
 {
-	if (access(line, F_OK | R_OK | X_OK) == -1)
+	char	*trimmed;
+	int		ret;
+
+	trimmed = ft_strtrim(line, " \t\n\r");
+	if (!trimmed)
 	{
+		handle_error(ERO_MALLOC);
+		return (-1);
+	}
+	ret = access(trimmed, F_OK | R_OK);
+	if (ret == -1)
 		handle_error(ERO_FILE);
-		return (-1);
-	}
-	return (0);
-}
-
-char	*valid_set_texture_data(char *line, char *prefix)
-{
-	if (line == NULL && prefix == NULL)
-	{
-		handle_error(ERO_MAP);
-		return (NULL);
-	}
-	if (line == NULL)
-		return (ft_strdup(prefix));
-	free(line);
-	return (ft_strdup(prefix));
-}
-
-int	is_acceptable_file(char *line, int skip, t_cub3d **cub3d)
-{
-	char	*trimmed_line;
-	int		i;
-
-	i = skip;
-	while (ft_isspace(line[i]))
-		i++;
-	trimmed_line = ft_strchr(line + skip, line[i]);
-	if (!trimmed_line)
-	{
-		handle_error(ERO_MAP);
-		return (-1);
-	}
-	set_texture_data(line, skip, cub3d);
-	if (check_access(trimmed_line) == -1)
+	free(trimmed);
+	if (ret == -1)
 		return (-1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/10 13:55:30 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:25:53 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	alloc_ray_buffers(t_data *d)
 	d->hit_y = (double *)malloc(sizeof(double) * d->win_w);
 	if (!d->hit_x || !d->hit_y)
 	{
-		handle_error("ray buffer alloc failed");
+		handle_error("Error\nray buffer alloc failed");
 		return (1);
 	}
 	return (0);

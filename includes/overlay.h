@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 13:51:35 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:46:45 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,21 @@
 # define MINI_RAY_STEP 6
 # define MINI_RAY_COL 0xFF0000
 
-/* ─── add after your other typedefs ─────────────────────────────────────── */
+typedef struct s_line
+{
+	int		x0;
+	int		y0;
+	int		x1;
+	int		y1;
+	int		dx;
+	int		dy;
+	int		steps;
+	float	x_inc;
+	float	y_inc;
+	float	x;
+	float	y;
+}	t_line;
+
 typedef struct s_pti
 {
 	int				x;
@@ -63,12 +77,8 @@ typedef struct s_lineopt
 	t_clip			clip;
 	unsigned int	color;
 }					t_lineopt;
-/* ───────────────────────────────────────────────────────────────────────── */
 
-/* ─── replace old prototypes (many args) with these ─────────────────────── */
-/* ───────────────────────────────────────────────────────────────────────── */
-
-/* ── overlay data ────────────────────────────────────────────────────────── */
+/* ── texture / runtime data ──────────────────────────────────────────────── */
 typedef struct s_tex
 {
 	void	*img;
@@ -79,6 +89,7 @@ typedef struct s_tex
 	int		width;
 	int		height;
 }	t_tex;
+
 typedef struct s_data
 {
 	void			*mlx;
@@ -118,7 +129,8 @@ typedef struct s_data
 	int				mm_w;
 	int				mm_h;
 	int				mm_scale;
-	t_tex	tex[4]; // 0=N,1=S,2=W,3=E
+
+	t_tex			tex[4]; /* 0=NO, 1=SO, 2=WE, 3=EA */
 	double			*hit_x;
 	double			*hit_y;
 }					t_data;
@@ -139,14 +151,32 @@ typedef struct s_cast
 	int				side;
 	double			perp;
 }					t_cast;
-
+typedef struct s_slice
+{
+	int		h;
+	int		draw_start;
+	int		draw_end;
+	int		tex_x;
+	double	step;
+	double	tex_pos;
+	t_tex	*tex;
+}	t_slice;
 /* ── pixels / primitives ─────────────────────────────────────────────────── */
 void				put_pixel(t_data *d, int x, int y, unsigned int color);
 unsigned int		get_pixel(t_data *d, int x, int y);
+unsigned int		tex_get_pixel(t_tex *t, int x, int y);
 unsigned int		blend_rgb(unsigned int dst, unsigned int src, double a);
 void				put_pixel_blend(t_data *d, int xy[], unsigned int color,
 						double a);
 
+void				draw_line(t_data *d, int x01, int y01[], unsigned int c);
+void				check_data_draw_line(int dsxy[], int *err);
+void				draw_rect_blend(t_data *d, int xywh[], unsigned int c,
+						double a);
+void				draw_rect(t_data *d, int xywh[], unsigned int c);
+void				draw_line_clip(t_data *d, int xy01[], unsigned int c);
+
+/* ── controls / movement ─────────────────────────────────────────────────── */
 int					key_press(int kc, t_data *d);
 int					key_release(int kc, t_data *d);
 int					close_game(t_data *d);
@@ -163,19 +193,16 @@ int					is_key_esc(int kc);
 int					is_key_r(int kc);
 int					is_key_f(int kc);
 
-void				draw_line(t_data *d, int x01, int y01[], unsigned int c);
-void				check_data_draw_line(int dsxy[], int *err);
-void				draw_rect_blend(t_data *d, int xywh[], unsigned int c,
-						double a);
-void				draw_rect(t_data *d, int xywh[], unsigned int c);
-void				draw_line_clip(t_data *d, int xy01[], unsigned int c);
 void				move_fwd_back(t_data *d, double ms);
 void				move_strafe(t_data *d, double ms);
 void				rotate_dir_plane(t_data *d, double rs);
 void				update_pitch(t_data *d, double dt);
 void				move_player(t_data *d, double dt);
+
+/* ── sky / floor ─────────────────────────────────────────────────────────── */
 void				draw_sky_floor(t_data *d);
 
+/* ── raycast ─────────────────────────────────────────────────────────────── */
 void				cast_init(t_data *d, t_cast *c, int col);
 void				cast_init_ray(t_data *d, t_cast *c, int col);
 void				cast_init_dda(t_data *d, t_cast *c);
@@ -184,17 +211,18 @@ void				cast_step_to_hit(t_data *d, t_cast *c);
 void				draw_slice_store_hit(t_data *d, t_cast *c, int col);
 void				cast_and_draw_column(t_data *d, int col);
 
-void				mm_compute_rect(t_data *d);
-void				mm_draw_cells(t_data *d);
-void				mm_draw_player_and_head(t_data *d, int *px, int *py);
-void				mm_draw_rays(t_data *d, int px, int py);
-void				mm_draw_border(t_data *d);
-void				draw_minimap_overlay(t_data *d);
+/* ── textures lifecycle ──────────────────────────────────────────────────── */
+int					init_textures(t_data *d);
+void				destroy_textures(t_data *d);
 
+/* ── frame ───────────────────────────────────────────────────────────────── */
 int					render_frame(void *param);
 
+/* ── init / alloc ────────────────────────────────────────────────────────── */
 void				init_player_camera(t_data *d);
 int					init_gfx(t_data *d);
 int					alloc_ray_buffers(t_data *d);
+int					init_textures(t_data *d);
+void				destroy_textures(t_data *d);
 
 #endif

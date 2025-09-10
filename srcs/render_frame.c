@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 13:53:53 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:43:54 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
-
 
 int	render_frame(void *param)
 {

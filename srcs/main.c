@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 12:11:16 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:30:12 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	setup_game(t_data *d, t_cub3d *c3d, char *path)
 	init_player_camera(d);
 	if (init_gfx(d))
 		return (1);
+	if (init_textures(d))
+		return (1);
 	if (alloc_ray_buffers(d))
 		return (1);
 	return (0);
@@ -53,11 +55,28 @@ static void	set_hooks(t_data *d)
 
 static int	cleanup_and_exit(t_data *d, t_cub3d *c3d, int code)
 {
-	free(d->hit_x);
-	free(d->hit_y);
-	free_texture(c3d);
-	free_map_points(c3d);
-	free(c3d);
+	if (d)
+	{
+		if (d->hit_x)
+			free(d->hit_x);
+		if (d->hit_y)
+			free(d->hit_y);
+		destroy_textures(d);
+		if (d->img)
+			mlx_destroy_image(d->mlx, d->img);
+		if (d->win)
+			mlx_destroy_window(d->mlx, d->win);
+		if (d->mlx)
+			mlx_destroy_display(d->mlx);
+		if (d->mlx)
+			free(d->mlx);
+	}
+	if (c3d)
+	{
+		free_texture(c3d);
+		free_map_points(c3d);
+		free(c3d);
+	}
 	return (code);
 }
 

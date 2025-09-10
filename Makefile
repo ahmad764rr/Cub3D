@@ -35,6 +35,8 @@ SRCS := \
  	ovl_sky.c   		\
  	ovl_raycast.c		\
  	ovl_raycast2.c		\
+	utils_texture.c \
+	texture.c			\
 	render_frame.c		\
 	init.c
 

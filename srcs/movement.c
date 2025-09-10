@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 12:12:34 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:30:50 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	move_fwd_back(t_data *d, double ms)
 {
 	double	nx;
 	double	ny;
+
 	ms = 0.04;
 	if (d->act_fwd)
 	{
@@ -56,7 +57,6 @@ void	rotate_dir_plane(t_data *d, double rs)
 	d->plane_x = d->plane_x * cos(ang) - d->plane_y * sin(ang);
 	d->plane_y = opx * sin(ang) + d->plane_y * cos(ang);
 }
-
 
 void	move_player(t_data *d, double dt)
 {

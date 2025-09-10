@@ -6,62 +6,85 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:55:24 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 13:55:51 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 14:54:44 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/overlay.h"
+#include <math.h>
 
-/*
-** Draw one vertical wall slice for screen column `col`, then store the exact
-** world hit coordinate of the ray for overlay effects (minimap, markers...).
-**
-** Key idea:
-**   - We already have c->perp = perpendicular distance to the wall (no fisheye).
-**   - Wall height in pixels ~ screen_height / distance.
-**   - We center the slice around the middle of the screen (+ pitch for head bob).
-*/
-void	draw_slice_store_hit(t_data *d, t_cast *c, int col)
+
+static int	pick_tex_id(t_cast *c)
 {
-	int				y_range[2];     /* y_range[0] = startY, y_range[1] = endY */
-	int				h;              /* slice (wall) height on screen in pixels */
-	unsigned int	color;
-
-	/* Avoid divide-by-zero: clamp extremely small distances */
-	if (c->perp < 1e-6)
-		c->perp = 1e-6;
-
-	/* Simple perspective: taller when closer, shorter when farther */
-	h = (int)(d->win_h / c->perp);
-
-	/* Center the wall slice vertically (middle of screen is d->win_h / 2) */
-	y_range[0] = -h / 2 + d->win_h / 2; /* top Y */
-	y_range[1] =  h / 2 + d->win_h / 2; /* bottom Y */
-
-	/* Clip to window bounds */
-	if (y_range[0] < 0)
-		y_range[0] = 0;
-	if (y_range[1] >= d->win_h)
-		y_range[1] = d->win_h - 1;
-
-	/* Simple shading: darken if we hit an NS wall (side=1), brighter for EW */
-	color = (c->side) ? 0x888888 : 0xBBBBBB;
-
-	/* Draw a single vertical line at x = col from y = start to y = end */
-	draw_line(d, col, y_range, color);
-
-	// /* Save the exact world-space intersection point for overlays */
-	// d->hit_x[col] = d->pos_x + c->rx * c->perp;
-	// d->hit_y[col] = d->pos_y + c->ry * c->perp;
+	if (c->side == 0)
+	{
+		if (c->rx > 0)
+			return (2);
+		return (3);
+	}
+	if (c->ry > 0)
+		return (1);
+	return (0);
 }
 
-/*
-** Full pipeline for one screen column:
-**   1) Build the ray direction from camera plane.
-**   2) Prepare DDA (grid stepping) parameters.
-**   3) Step the ray through the grid until it hits a wall.
-**   4) Project and draw the wall slice, store hit point.
-*/
+static void	setup_slice(t_data *d, t_cast *c, t_slice *s)
+{
+	double	wall_x;
+
+	if (c->perp < 1e-6)
+		c->perp = 1e-6;
+	s->h = (int)(d->win_h / c->perp);
+	s->draw_start = -s->h / 2 + d->win_h / 2 ;
+	s->draw_end = s->h / 2 + d->win_h / 2 ;
+	if (s->draw_start < 0)
+		s->draw_start = 0;
+	if (s->draw_end >= d->win_h)
+		s->draw_end = d->win_h - 1;
+	s->tex = &d->tex[pick_tex_id(c)];
+	if (c->side == 0)
+		wall_x = d->pos_y + c->perp * c->ry;
+	else
+		wall_x = d->pos_x + c->perp * c->rx;
+	wall_x -= floor(wall_x);
+	s->tex_x = (int)(wall_x * (double)s->tex->width);
+	if ((c->side == 0 && c->rx > 0) || (c->side == 1 && c->ry < 0))
+		s->tex_x = s->tex->width - s->tex_x - 1;
+	s->step = (double)s->tex->height / (double)s->h;
+	s->tex_pos = (s->draw_start - (d->win_h / 2)
+			+ s->h / 2.0) * s->step;
+}
+
+static void	draw_slice(t_data *d, t_cast *c, t_slice *s, int col)
+{
+	int				y;
+	int				tex_y;
+	unsigned int	color;
+
+	y = s->draw_start;
+	while (y <= s->draw_end)
+	{
+		tex_y = (int)(s->tex_pos);
+		if (tex_y < 0)
+			tex_y = 0;
+		if (tex_y >= s->tex->height)
+			tex_y = s->tex->height - 1;
+		color = tex_get_pixel(s->tex, s->tex_x, tex_y);
+		if (c->side == 1)
+			color = ((color >> 1) & 0x7F7F7F);
+		put_pixel(d, col, y, color);
+		s->tex_pos += s->step;
+		y++;
+	}
+}
+
+void	draw_slice_store_hit(t_data *d, t_cast *c, int col)
+{
+	t_slice	s;
+
+	setup_slice(d, c, &s);
+	draw_slice(d, c, &s, col);
+}
+
 void	cast_and_draw_column(t_data *d, int col)
 {
 	t_cast	c;
