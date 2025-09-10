@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   overlay.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 17:54:52 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/10 13:51:35 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,16 @@ typedef struct s_lineopt
 /* ───────────────────────────────────────────────────────────────────────── */
 
 /* ── overlay data ────────────────────────────────────────────────────────── */
-
+typedef struct s_tex
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+	int		width;
+	int		height;
+}	t_tex;
 typedef struct s_data
 {
 	void			*mlx;
@@ -109,7 +118,7 @@ typedef struct s_data
 	int				mm_w;
 	int				mm_h;
 	int				mm_scale;
-
+	t_tex	tex[4]; // 0=N,1=S,2=W,3=E
 	double			*hit_x;
 	double			*hit_y;
 }					t_data;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 14:13:13 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/10 12:12:34 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	move_fwd_back(t_data *d, double ms)
 {
 	double	nx;
 	double	ny;
-
+	ms = 0.04;
 	if (d->act_fwd)
 	{
 		nx = d->pos_x + d->dir_x * ms;
@@ -36,27 +36,6 @@ void	move_fwd_back(t_data *d, double ms)
 		if (d->c3d->point[(int)ny][(int)d->pos_x].access == 0)
 			d->pos_y = ny;
 	}
-}
-
-void	move_strafe(t_data *d, double ms)
-{
-	double	side;
-	double	sx;
-	double	sy;
-
-	if (!(d->act_left || d->act_right))
-		return ;
-	side = 0.0;
-	if (d->act_left)
-		side = 1.0;
-	else
-		side = -1.0;
-	sx = side * d->dir_y * ms;
-	sy = side * -d->dir_x * ms;
-	if (d->c3d->point[(int)d->pos_y][(int)(d->pos_x + sx)].access == 0)
-		d->pos_x += sx;
-	if (d->c3d->point[(int)(d->pos_y + sy)][(int)d->pos_x].access == 0)
-		d->pos_y += sy;
 }
 
 void	rotate_dir_plane(t_data *d, double rs)
@@ -78,22 +57,6 @@ void	rotate_dir_plane(t_data *d, double rs)
 	d->plane_y = opx * sin(ang) + d->plane_y * cos(ang);
 }
 
-void	update_pitch(t_data *d, double dt)
-{
-	int	speed;
-	int	maxp;
-
-	speed = (int)(dt * 600.0);
-	if (d->look_up)
-		d->pitch -= speed;
-	if (d->look_down)
-		d->pitch += speed;
-	maxp = d->win_h / 2 - 10;
-	if (d->pitch > maxp)
-		d->pitch = maxp;
-	if (d->pitch < -maxp)
-		d->pitch = -maxp;
-}
 
 void	move_player(t_data *d, double dt)
 {
@@ -103,7 +66,5 @@ void	move_player(t_data *d, double dt)
 	ms = dt * 5.0;
 	rs = dt * 3.0;
 	move_fwd_back(d, ms);
-	move_strafe(d, ms);
 	rotate_dir_plane(d, rs);
-	update_pitch(d, dt);
 }

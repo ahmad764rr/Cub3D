@@ -27,7 +27,6 @@ SRCS := \
     color_handler.c		\
  	ovl_pixels.c 		\
  	ovl_draw.c 			\
- 	ovl_draw2.c 		\
 	ovl_key.c 			\
 	key_diff.c			\
 	key_diff2.c			\
@@ -36,8 +35,6 @@ SRCS := \
  	ovl_sky.c   		\
  	ovl_raycast.c		\
  	ovl_raycast2.c		\
- 	ovl_minimap.c		\
- 	ovl_minimap2.c		\
 	render_frame.c		\
 	init.c
 
