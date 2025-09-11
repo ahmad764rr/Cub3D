@@ -1,7 +1,7 @@
 NO textures/simonkraft/eagle.xpm
-SO textures/simonkraft/purplestone.xpm
-WE textures/simonkraft/eagle.xpm
-EA textures/simonkraft/purplestone.xpm
+SO textures/simonkraft/eagle.xpm
+WE textures/simonkraft/basalt_top.png
+EA textures/simonkraft/basalt_top.png
 F 100,100,100
 C 200,200,255
 

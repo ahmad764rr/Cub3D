@@ -12,20 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-static int	has_extension(const char *path, const char *ext)
-{
-	size_t	lp;
-	size_t	le;
-
-	if (!path || !ext)
-		return (0);
-	lp = ft_strlen(path);
-	le = ft_strlen(ext);
-	if (lp < le)
-		return (0);
-	return (ft_strncmp(path + (lp - le), ext, le) == 0);
-}
-
 char	*valid_set_texture_data(char *line, char *prefix)
 {
 	if (line == NULL && prefix == NULL)
@@ -39,12 +25,6 @@ char	*valid_set_texture_data(char *line, char *prefix)
 	return (ft_strdup(prefix));
 }
 
-/*
-** Validate a texture file path:
-** - skip whitespace
-** - ensure .xpm extension
-** - check file is readable
-*/
 int	is_acceptable_file(char *line, int skip, t_cub3d **cub3d)
 {
 	char	*trimmed_line;
@@ -57,11 +37,6 @@ int	is_acceptable_file(char *line, int skip, t_cub3d **cub3d)
 	if (!trimmed_line)
 	{
 		handle_error(ERO_MAP);
-		return (-1);
-	}
-	if (!has_extension(trimmed_line, ".xpm"))
-	{
-		handle_error("Error\nTexture must be an .xpm file");
 		return (-1);
 	}
 	set_texture_data(line, skip, cub3d);
