@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ovl_raycast2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:55:24 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:54:44 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:52:32 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/overlay.h"
 #include <math.h>
-
 
 static int	pick_tex_id(t_cast *c)
 {
