@@ -26,7 +26,6 @@ SRCS := \
     setting_data.c     	\
     color_handler.c		\
  	ovl_pixels.c 		\
- 	ovl_draw.c 			\
 	ovl_key.c 			\
 	key_diff.c			\
 	key_diff2.c			\

@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:10:49 by ahramada          #+#    #+#             */
-/*   Updated: 2025/09/10 14:54:11 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:19:48 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,12 @@ void	cast_init_ray(t_data *d, t_cast *c, int col)
 
 void	cast_init_dda(t_data *d, t_cast *c)
 {
-	if (fabs(c->rx) < 1e-9)
-		c->dx = 1e30;
-	else
-		c->dx = fabs(1.0 / c->rx);
-	if (fabs(c->ry) < 1e-9)
-		c->dy = 1e30;
-	else
-		c->dy = fabs(1.0 / c->ry);
+	c->dx = sqrt(1.0 + (c->ry * c->ry) / (c->rx * c->rx));
+	c->dy = sqrt(1.0 + (c->rx * c->rx) / (c->ry * c->ry));
+
+	if (fabs(c->rx) < 0) c->dx = 1e30;
+	if (fabs(c->ry) < 0) c->dy = 1e30;
+
 	if (c->rx < 0)
 		c->step_x = -1;
 	else
@@ -88,8 +86,16 @@ void	cast_step_to_hit(t_data *d, t_cast *c)
 	hit = 0;
 	while (!hit)
 		cast_step_to_hit_check(d, c, &hit);
+	double ray_angle = atan2(c->ry, c->rx);
+	double dir_angle = atan2(d->dir_y, d->dir_x);
+
+	double angle_diff = ray_angle - dir_angle;
+
+	double euclid_dist;
 	if (c->side == 0)
-		c->perp = c->sx - c->dx;
+    	euclid_dist = c->sx - c->dx;
 	else
-		c->perp = c->sy - c->dy;
+    	euclid_dist = c->sy - c->dy;
+
+	c->perp = euclid_dist * cos(angle_diff);
 }

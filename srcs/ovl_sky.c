@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:19:42 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 21:12:17 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	draw_sky_floor(t_data *d)
 	int	x;
 	int	y;
 
-	hz = d->win_h / 2 + d->pitch;
+	hz = d->win_h / 2 ;
 	if (hz < 0)
 		hz = 0;
 	if (hz > d->win_h)

@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:00:04 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:45:11 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 10:43:28 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ int	ft_isspace(char c)
 		|| c == '\v' || c == '\f' || c == '\r');
 }
 
-/*
-** Ensure given map file exists, is readable,
-** and ends with ".cub".
-*/
 void	check_name(t_cub3d *cub3d)
 {
 	char	*arg;
@@ -46,10 +42,6 @@ void	check_name(t_cub3d *cub3d)
 	}
 }
 
-/*
-** Trim path and check read access.
-** Returns 0 if ok, -1 if not accessible.
-*/
 int	check_access(char *line)
 {
 	char	*trimmed;

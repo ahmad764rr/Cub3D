@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:03:32 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 22:38:46 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,6 @@ void	put_pixel(t_data *d, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
-unsigned int	get_pixel(t_data *d, int x, int y)
-{
-	char	*src;
-
-	if ((unsigned)x >= (unsigned)d->win_w)
-		return (0);
-	if ((unsigned)y >= (unsigned)d->win_h)
-		return (0);
-	src = d->addr + (y * d->line_len + x * (d->bpp / 8));
-	return (*(unsigned int *)src);
-}
 
 unsigned int	tex_get_pixel(t_tex *t, int x, int y)
 {

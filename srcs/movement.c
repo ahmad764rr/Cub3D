@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:30:50 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/10 21:11:47 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	move_fwd_back(t_data *d, double ms)
 	double	nx;
 	double	ny;
 
-	ms = 0.04;
+	//ms = 0.04;
 	if (d->act_fwd)
 	{
 		nx = d->pos_x + d->dir_x * ms;

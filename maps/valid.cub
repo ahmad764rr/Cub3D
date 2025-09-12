@@ -1,11 +1,11 @@
 F 164,169,2
-NO textures/simonkraft/wet_sponge.png   
-SO textures/simonkraft/wet_sponge.png                  
-WE textures/simonkraft/wet_sponge.png   
-EA textures/simonkraft/wet_sponge.png
+NO textures/simonkraft/eagle.xpm   
+SO textures/simonkraft/eagle.xpm                  
+WE textures/simonkraft/eagle.xpm   
+EA textures/simonkraft/eagle.xpm
 C +2,0,0   
-
-1000
+11111
+10001
 1N11              
 1011
-110
+1101

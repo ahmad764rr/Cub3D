@@ -6,7 +6,7 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 16:40:00 by ahramada          #+#    #+#             */
-/*   Updated: 2025/09/10 14:45:24 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 10:43:15 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,6 @@ char	*valid_set_texture_data(char *line, char *prefix)
 	return (ft_strdup(prefix));
 }
 
-/*
-** Validate a texture file path:
-** - skip whitespace
-** - ensure .xpm extension
-** - check file is readable
-*/
 int	is_acceptable_file(char *line, int skip, t_cub3d **cub3d)
 {
 	char	*trimmed_line;

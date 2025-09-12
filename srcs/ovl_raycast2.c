@@ -6,13 +6,12 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:55:24 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:54:44 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 10:37:23 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/overlay.h"
 #include <math.h>
-
 
 static int	pick_tex_id(t_cast *c)
 {
@@ -47,11 +46,8 @@ static void	setup_slice(t_data *d, t_cast *c, t_slice *s)
 		wall_x = d->pos_x + c->perp * c->rx;
 	wall_x -= floor(wall_x);
 	s->tex_x = (int)(wall_x * (double)s->tex->width);
-	if ((c->side == 0 && c->rx > 0) || (c->side == 1 && c->ry < 0))
-		s->tex_x = s->tex->width - s->tex_x - 1;
 	s->step = (double)s->tex->height / (double)s->h;
-	s->tex_pos = (s->draw_start - (d->win_h / 2)
-			+ s->h / 2.0) * s->step;
+	s->tex_pos = (s->draw_start - (d->win_h / 2) + s->h / 2.0) * s->step;
 }
 
 static void	draw_slice(t_data *d, t_cast *c, t_slice *s, int col)
@@ -69,8 +65,6 @@ static void	draw_slice(t_data *d, t_cast *c, t_slice *s, int col)
 		if (tex_y >= s->tex->height)
 			tex_y = s->tex->height - 1;
 		color = tex_get_pixel(s->tex, s->tex_x, tex_y);
-		if (c->side == 1)
-			color = ((color >> 1) & 0x7F7F7F);
 		put_pixel(d, col, y, color);
 		s->tex_pos += s->step;
 		y++;
