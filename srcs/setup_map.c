@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:06:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 17:25:15 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:06:34 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ void	set_map_values(t_cub3d **cub3d, char *line, int y)
 	{
 		if (line[x] == ' ')
 			(*cub3d)->point[y][x].access = 0;
-		else if ((line[x] == 'N' || line[x] == 'E' 
-			|| line[x] == 'S' || line[x] == 'W'))
+		else if ((line[x] == 'N' || line[x] == 'E' || line[x] == 'S'
+				|| line[x] == 'W'))
 			(*cub3d)->point[y][x].access = 0;
 		else
-		(*cub3d)->point[y][x].access = line[x] - '0';
+			(*cub3d)->point[y][x].access = line[x] - '0';
 		(*cub3d)->point[y][x].x = x;
 		(*cub3d)->point[y][x].y = y;
 		(*cub3d)->point[y][x].width = size;
@@ -94,27 +94,35 @@ void	set_map_values(t_cub3d **cub3d, char *line, int y)
 
 int	check_map_values_condtion(t_cub3d **cub3d, char *line, int *check_empty)
 {
+	int error;
 	int	i;
 
 	i = 0;
+	error = 0;
 	while (line[i])
 	{
+		if ((line[i] == 'N' || line[i] == 'E' || line[i] == 'S'
+				|| line[i] == 'W'))
+			error++;
 		if (!ft_isspace(line[i]))
 			(*check_empty) = 0;
 		if (line[i] != '1' && line[i] != '0' && !ft_isspace(line[i])
-			&& line[i] != 'N' && line[i] != 'W' && line[i] != 'E' && line[i] != 'S')
+			&& line[i] != 'N' && line[i] != 'W' && line[i] != 'E'
+			&& line[i] != 'S')
 			return (-1);
-		else if ((line[i] == 'N' || line[i] == 'E' 
-			|| line[i] == 'S' || line[i] == 'W') && (*cub3d)->player.map_x == -1)
-			{
-				(*cub3d)->spawn = line[i];
-				(*cub3d)->player.map_x = i;
-			}
-		else if ((line[i] == 'N' || line[i] == 'E'
-			|| line[i] == 'S' || line[i] == 'W') && (*cub3d)->player.map_y != -1)
+		else if ((line[i] == 'N' || line[i] == 'E' || line[i] == 'S'
+				|| line[i] == 'W') && (*cub3d)->player.map_x == -1)
+		{
+			(*cub3d)->spawn = line[i];
+			(*cub3d)->player.map_x = i;
+		}
+		else if ((line[i] == 'N' || line[i] == 'E' || line[i] == 'S'
+				|| line[i] == 'W') && (*cub3d)->player.map_y != -1)
 			return (-1);
 		i++;
 	}
+	if (error > 1)
+		return (-1);
 	return (0);
 }
 

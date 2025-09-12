@@ -30,10 +30,10 @@ void	cast_init_dda(t_data *d, t_cast *c)
 {
 	c->dx = sqrt(1.0 + (c->ry * c->ry) / (c->rx * c->rx));
 	c->dy = sqrt(1.0 + (c->rx * c->rx) / (c->ry * c->ry));
-
-	if (fabs(c->rx) < 0) c->dx = 1e30;
-	if (fabs(c->ry) < 0) c->dy = 1e30;
-
+	if (fabs(c->rx) < 0)
+		c->dx = 1e30;
+	if (fabs(c->ry) < 0)
+		c->dy = 1e30;
 	if (c->rx < 0)
 		c->step_x = -1;
 	else
@@ -81,21 +81,21 @@ void	cast_step_to_hit_check(t_data *d, t_cast *c, int *hit)
 
 void	cast_step_to_hit(t_data *d, t_cast *c)
 {
-	int	hit;
+	int		hit;
+	double	ray_angle;
+	double	dir_angle;
+	double	angle_diff;
+	double	euclid_dist;
 
 	hit = 0;
 	while (!hit)
 		cast_step_to_hit_check(d, c, &hit);
-	double ray_angle = atan2(c->ry, c->rx);
-	double dir_angle = atan2(d->dir_y, d->dir_x);
-
-	double angle_diff = ray_angle - dir_angle;
-
-	double euclid_dist;
+	ray_angle = atan2(c->ry, c->rx);
+	dir_angle = atan2(d->dir_y, d->dir_x);
+	angle_diff = ray_angle - dir_angle;
 	if (c->side == 0)
-    	euclid_dist = c->sx - c->dx;
+		euclid_dist = c->sx - c->dx;
 	else
-    	euclid_dist = c->sy - c->dy;
-
+		euclid_dist = c->sy - c->dy;
 	c->perp = euclid_dist * cos(angle_diff);
 }

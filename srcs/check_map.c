@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:05:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 18:55:13 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:04:52 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int	check_map_condtion(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 		if ((*cub3d)->is_empty == 0)
 		{
 			if ((*cub3d)->player.map_x != -1 && (*cub3d)->player.map_y == -1
-				&& (map_line[(*cub3d)->player.map_x] == 'N' || map_line[(*cub3d)->player.map_x] == 'E'
-				|| map_line[(*cub3d)->player.map_x] == 'S' || map_line[(*cub3d)->player.map_x] == 'W'))
+				&& (map_line[(*cub3d)->player.map_x] == 'N'
+					|| map_line[(*cub3d)->player.map_x] == 'E'
+					|| map_line[(*cub3d)->player.map_x] == 'S'
+					|| map_line[(*cub3d)->player.map_x] == 'W'))
 				(*cub3d)->player.map_y = (*y);
 			(*y)++;
 		}
@@ -64,7 +66,8 @@ int	check_map_searching_2(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 
 	trimmed_line = ft_strtrim(map_line, " \t\n\r");
 	if ((*lock) == 0 && trimmed_line[0] != '1' && trimmed_line[0] != '0'
-		&& trimmed_line[0] != 'N' && trimmed_line[0] != 'E' && trimmed_line[0] != 'S' && trimmed_line[0] != 'W')
+		&& trimmed_line[0] != 'N' && trimmed_line[0] != 'E'
+		&& trimmed_line[0] != 'S' && trimmed_line[0] != 'W')
 		ret = check_map_condtion(cub3d, trimmed_line, lock, y);
 	else
 		ret = check_map_condtion(cub3d, map_line, lock, y);
@@ -84,9 +87,9 @@ int	check_map_searching_2(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 
 int	check_map_searching(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 {
-	char *trimmed_line;
-	int	ret;
-	int	i;
+	char	*trimmed_line;
+	int		ret;
+	int		i;
 
 	i = 0;
 	(*cub3d)->is_empty = 0;
@@ -99,7 +102,7 @@ int	check_map_searching(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 			map_line = trimmed_line;
 		}
 		else
-			free(trimmed_line);	
+			free(trimmed_line);
 		ret = check_map_searching_2(cub3d, map_line, lock, y);
 		if (ret == -1)
 			return (-1);
