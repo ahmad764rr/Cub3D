@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:06:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/02 17:04:03 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:07:55 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	set_map_values(t_cub3d **cub3d, char *line, int y)
 	{
 		if (line[x] == ' ')
 			(*cub3d)->point[y][x].access = 0;
-		else if (line[x] == 'N')
+		else if ((line[x] == 'N' || line[x] == 'E' 
+			|| line[x] == 'S' || line[x] == 'W'))
 			(*cub3d)->point[y][x].access = 0;
 		else
 			(*cub3d)->point[y][x].access = line[x] - '0';
@@ -101,11 +102,13 @@ int	check_map_values_condtion(t_cub3d **cub3d, char *line, int *check_empty)
 		if (!ft_isspace(line[i]))
 			(*check_empty) = 0;
 		if (line[i] != '1' && line[i] != '0' && !ft_isspace(line[i])
-			&& line[i] != 'N')
+			&& line[i] != 'N' && line[i] != 'W' && line[i] != 'E' && line[i] != 'S')
 			return (-1);
-		else if (line[i] == 'N' && (*cub3d)->player.map_x == -1)
+		else if ((line[i] == 'N' || line[i] == 'E' 
+			|| line[i] == 'S' || line[i] == 'W') && (*cub3d)->player.map_x == -1)
 			(*cub3d)->player.map_x = i;
-		else if (line[i] == 'N' && (*cub3d)->player.map_y != -1)
+		else if ((line[i] == 'N' || line[i] == 'E'
+			|| line[i] == 'S' || line[i] == 'W') && (*cub3d)->player.map_y != -1)
 			return (-1);
 		i++;
 	}

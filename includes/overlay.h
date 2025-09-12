@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   overlay.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:46:45 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:14:52 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef struct s_data
 	t_tex			tex[4]; /* 0=NO, 1=SO, 2=WE, 3=EA */
 	double			*hit_x;
 	double			*hit_y;
+
+	char			spawn;
 }					t_data;
 
 typedef struct s_cast
