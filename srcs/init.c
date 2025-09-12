@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/12 17:12:16 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:27:30 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,28 @@ void	apply_spawn_orientation(t_data *d)
 	double	pl;
 
 	pl = 0.66;
-	if (d->spawn == 'N')
+	if (d->c3d->spawn == 'N')
 	{
 		d->dir_x = 0.0;
 		d->dir_y = -1.0;
 		d->plane_x = pl;
 		d->plane_y = 0.0;
 	}
-	else if (d->spawn == 'S')
+	else if (d->c3d->spawn == 'S')
 	{
 		d->dir_x = 0.0;
 		d->dir_y = 1.0;
 		d->plane_x = -pl;
 		d->plane_y = 0.0;
 	}
-	else if (d->spawn == 'E')
+	else if (d->c3d->spawn == 'E')
 	{
 		d->dir_x = 1.0;
 		d->dir_y = 0.0;
 		d->plane_x = 0.0;
 		d->plane_y = pl;
 	}
-	else if (d->spawn == 'W')
+	else if (d->c3d->spawn == 'W')
 	{
 		d->dir_x = -1.0;
 		d->dir_y = 0.0;

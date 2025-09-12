@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:51:38 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 14:14:16 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:24:58 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ struct					s_cub3d
 	int					is_empty;
 	int					fd;
 	int					flag;
+	char				spawn;
 	char				*file_path;
 	t_map				map;
 	t_player			player;
