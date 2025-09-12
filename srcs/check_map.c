@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:05:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 17:08:47 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:32:44 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	check_map_condtion(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 		if ((*cub3d)->is_empty == 0)
 		{
 			if ((*cub3d)->player.map_x != -1 && (*cub3d)->player.map_y == -1
-				&& map_line[(*cub3d)->player.map_x] == 'N' || map_line[(*cub3d)->player.map_x] == 'E'
-				|| map_line[(*cub3d)->player.map_x] == 'S' || map_line[(*cub3d)->player.map_x] == 'W')
+				&& (map_line[(*cub3d)->player.map_x] == 'N' || map_line[(*cub3d)->player.map_x] == 'E'
+				|| map_line[(*cub3d)->player.map_x] == 'S' || map_line[(*cub3d)->player.map_x] == 'W'))
 				(*cub3d)->player.map_y = (*y);
 			(*y)++;
 		}
