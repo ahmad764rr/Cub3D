@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:30:12 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:12:20 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,10 @@ static void	set_hooks(t_data *d)
 	mlx_loop_hook(d->mlx, render_frame, d);
 }
 
-static int	cleanup_and_exit(t_data *d, t_cub3d *c3d, int code)
+int	cleanup_and_exit(t_data *d, t_cub3d *c3d, int code)
 {
 	if (d)
 	{
-		if (d->hit_x)
-			free(d->hit_x);
-		if (d->hit_y)
-			free(d->hit_y);
 		destroy_textures(d);
 		if (d->img)
 			mlx_destroy_image(d->mlx, d->img);

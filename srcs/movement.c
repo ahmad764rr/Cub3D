@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 21:11:47 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:31:43 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	rotate_dir_plane(t_data *d, double rs)
 
 	if (!(d->act_turn_l || d->act_turn_r))
 		return ;
-	ang = rs;
+	ang = -rs;
 	if (d->act_turn_r)
-		ang = -rs;
+		ang = rs;
 	odx = d->dir_x;
 	opx = d->plane_x;
 	d->dir_x = d->dir_x * cos(ang) - d->dir_y * sin(ang);

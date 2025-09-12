@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:51:38 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 17:24:58 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 19:02:57 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,4 @@ void					check_data_error(t_cub3d **cub3d, char *message,
 							int flag);
 void					free_map_points(t_cub3d *cub3d);
 void					set_map_values(t_cub3d **cub3d, char *line, int y);
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by you               #+#    #+#             */
-/*   Updated: 2025/09/12 17:27:30 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 19:10:53 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,5 @@ int	init_gfx(t_data *d)
 
 int	alloc_ray_buffers(t_data *d)
 {
-	d->hit_x = (double *)malloc(sizeof(double) * d->win_w);
-	d->hit_y = (double *)malloc(sizeof(double) * d->win_w);
-	if (!d->hit_x || !d->hit_y)
-	{
-		handle_error("Error\nray buffer alloc failed");
-		return (1);
-	}
 	return (0);
 }

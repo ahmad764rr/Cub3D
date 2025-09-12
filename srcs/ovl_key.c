@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ovl_key.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/10 14:19:21 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/12 19:09:16 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 int	key_press(int kc, t_data *d)
 {
 	if (is_key_esc(kc))
+	{
+		cleanup_and_exit(d, d->c3d, 0);
 		exit(0);
+	}
 	if (is_key_w(kc) || is_key_up(kc))
 		d->act_fwd = 1;
 	if (is_key_s(kc) || is_key_down(kc))
@@ -60,6 +63,8 @@ int	key_release(int kc, t_data *d)
 int	close_game(t_data *d)
 {
 	(void)d;
+	write(2, "Exiting...\n", 12);
+	cleanup_and_exit(d, d->c3d, 0);
 	exit(0);
 	return (0);
 }

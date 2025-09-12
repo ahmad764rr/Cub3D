@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 17:14:52 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 19:03:02 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ unsigned int		tex_get_pixel(t_tex *t, int x, int y);
 unsigned int		blend_rgb(unsigned int dst, unsigned int src, double a);
 void				put_pixel_blend(t_data *d, int xy[], unsigned int color,
 						double a);
+int						cleanup_and_exit(t_data *d, t_cub3d *c3d, int code);
 
 void				draw_line(t_data *d, int x01, int y01[], unsigned int c);
 void				check_data_draw_line(int dsxy[], int *err);
