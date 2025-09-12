@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 21:08:29 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 11:49:36 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 17:49:38 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void	set_texture_data(char *line, int skip, t_cub3d **cub3d)
 		return ;
 	}
 	if (ft_strncmp(line, "NO ", 3) == 0)
-		(*cub3d)->map.texture_north
-			= valid_set_texture_data((*cub3d)->map.texture_north, trimmed_line);
+		(*cub3d)->map.texture_north = valid_set_texture_data((*cub3d)->map.texture_north,
+				trimmed_line);
 	else if (ft_strncmp(line, "SO ", 3) == 0)
-		(*cub3d)->map.texture_south
-			= valid_set_texture_data((*cub3d)->map.texture_south, trimmed_line);
+		(*cub3d)->map.texture_south = valid_set_texture_data((*cub3d)->map.texture_south,
+				trimmed_line);
 	else if (ft_strncmp(line, "WE ", 3) == 0)
-		(*cub3d)->map.texture_west
-			= valid_set_texture_data((*cub3d)->map.texture_west, trimmed_line);
+		(*cub3d)->map.texture_west = valid_set_texture_data((*cub3d)->map.texture_west,
+				trimmed_line);
 	else if (ft_strncmp(line, "EA ", 3) == 0)
-		(*cub3d)->map.texture_east
-			= valid_set_texture_data((*cub3d)->map.texture_east, trimmed_line);
+		(*cub3d)->map.texture_east = valid_set_texture_data((*cub3d)->map.texture_east,
+				trimmed_line);
 }
 
 void	init_cub3d(t_cub3d *cub3d, char *arg)

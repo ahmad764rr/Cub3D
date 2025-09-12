@@ -1,9 +1,9 @@
 NO textures/simonkraft/eagle.xpm
-SO textures/simonkraft/eagle.xpm
-WE textures/simonkraft/eagle.xpm
-EA textures/simonkraft/eagle.xpm
-F 100,100,100
-C 200,200,255
+        SO textures/simonkraft/eagle.xpm
+    WE textures/simonkraft/eagle.xpm
+        EA textures/simonkraft/eagle.xpm
+                    F 100,100,100
+    C 200,200,255
 
 1111111111111111111111111111
 1000000000000000000000000001

@@ -18,7 +18,7 @@ void	draw_sky_floor(t_data *d)
 	int	x;
 	int	y;
 
-	hz = d->win_h / 2 ;
+	hz = d->win_h / 2;
 	if (hz < 0)
 		hz = 0;
 	if (hz > d->win_h)
