@@ -33,8 +33,8 @@ static void	setup_slice(t_data *d, t_cast *c, t_slice *s)
 	if (c->perp < 1e-6)
 		c->perp = 1e-6;
 	s->h = (int)(d->win_h / c->perp);
-	s->draw_start = -s->h / 2 + d->win_h / 2;
-	s->draw_end = s->h / 2 + d->win_h / 2;
+	s->draw_start = -s->h / 2 + d->win_h / 2 ;
+	s->draw_end = s->h / 2 + d->win_h / 2 ;
 	if (s->draw_start < 0)
 		s->draw_start = 0;
 	if (s->draw_end >= d->win_h)

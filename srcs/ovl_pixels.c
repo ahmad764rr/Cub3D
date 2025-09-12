@@ -24,6 +24,7 @@ void	put_pixel(t_data *d, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
+
 unsigned int	tex_get_pixel(t_tex *t, int x, int y)
 {
 	char	*src;

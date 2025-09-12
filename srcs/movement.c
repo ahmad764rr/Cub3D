@@ -18,7 +18,7 @@ void	move_fwd_back(t_data *d, double ms)
 	double	nx;
 	double	ny;
 
-	// ms = 0.04;
+	//ms = 0.04;
 	if (d->act_fwd)
 	{
 		nx = d->pos_x + d->dir_x * ms;

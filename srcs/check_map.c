@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:05:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 18:28:35 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/12 18:40:39 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@ void	free_map_points(t_cub3d *cub3d)
 
 int	check_map_condtion(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 {
-	char *temp;
-	// map_line = ft_strtrim(map_line, "\n");
-	temp = ft_strtrim(map_line, "\t \r");
-	if (temp[0] != '1' && temp[0] != '0' && temp[0] != '\0')
-	{
-		map_line = ft_strtrim(map_line, "\t \r");
-		free(temp);
-		return (3);
-	}
-	free(temp);
 	if ((*lock))
 	{
 		if (check_map_values(cub3d, map_line, (*y)) == -1)
@@ -94,18 +84,28 @@ int	check_map_searching_2(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 
 int	check_map_searching(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 {
+	char *trimmed_line;
 	int	ret;
+	int	i;
 
+	i = 0;
 	(*cub3d)->is_empty = 0;
 	while (map_line)
 	{
+		trimmed_line = ft_strtrim(map_line, " ");
+		if (trimmed_line[0] != '1' && trimmed_line[0] != '0')
+		{
+			free(map_line);
+			map_line = trimmed_line;
+		}
+		else
+			free(trimmed_line);	
 		ret = check_map_searching_2(cub3d, map_line, lock, y);
 		if (ret == -1)
 			return (-1);
 		else if (ret == 1)
-		{
 			continue ;
-		}
+		i++;
 		free(map_line);
 		map_line = get_next_line((*cub3d)->fd);
 	}

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/overlay.h"
-
 void	apply_spawn_orientation(t_data *d);
 void	init_player_camera(t_data *d)
 {
