@@ -12,53 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-void	free_map_points(t_cub3d *cub3d)
-{
-	int	i;
-
-	i = 0;
-	if (!cub3d->point || !cub3d)
-		return ;
-	while (i < cub3d->map.map_height)
-	{
-		free(cub3d->point[i]);
-		i++;
-	}
-	free(cub3d->point);
-}
-
-int	check_map_condtion(t_cub3d **cub3d, char *map_line, int *lock, int *y)
-{
-	if ((*lock))
-	{
-		if (check_map_values(cub3d, map_line, (*y)) == -1)
-		{
-			(*cub3d)->map.map_height = (*y);
-			handle_get_next_line((*cub3d)->fd, map_line);
-			return (-1);
-		}
-		if ((*cub3d)->is_empty == 0)
-		{
-			if ((*cub3d)->player.map_x != -1 && (*cub3d)->player.map_y == -1
-				&& (map_line[(*cub3d)->player.map_x] == 'N'
-					|| map_line[(*cub3d)->player.map_x] == 'E'
-					|| map_line[(*cub3d)->player.map_x] == 'S'
-					|| map_line[(*cub3d)->player.map_x] == 'W'))
-				(*cub3d)->player.map_y = (*y);
-			(*y)++;
-		}
-	}
-	else if (ft_strncmp(map_line, "1", 1) == 0 || ft_strncmp(map_line, "0",
-			1) == 0 || ft_strncmp(map_line, " ", 1) == 0)
-	{
-		(*lock) = 1;
-		return (1);
-	}
-	else
-		return (3);
-	return (0);
-}
-
 int	check_map_searching_2(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 {
 	int		ret;
@@ -85,31 +38,40 @@ int	check_map_searching_2(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 	return (0);
 }
 
-int	check_map_searching(t_cub3d **cub3d, char *map_line, int *lock, int *y)
+static int	process_line(t_cub3d **cub3d, char *map_line, int *lock, int *y)
 {
 	char	*trimmed_line;
 	int		ret;
-	int		i;
 
-	i = 0;
+	trimmed_line = ft_strtrim(map_line, " ");
+	if (trimmed_line[0] != '1' && trimmed_line[0] != '0')
+	{
+		free(map_line);
+		map_line = trimmed_line;
+	}
+	else
+		free(trimmed_line);
+	ret = check_map_searching_2(cub3d, map_line, lock, y);
+	if (ret == -1)
+		return (-1);
+	else if (ret == 1)
+		return (1);
+	free(map_line);
+	return (0);
+}
+
+int	check_map_searching(t_cub3d **cub3d, char *map_line, int *lock, int *y)
+{
+	int	ret;
+
 	(*cub3d)->is_empty = 0;
 	while (map_line)
 	{
-		trimmed_line = ft_strtrim(map_line, " ");
-		if (trimmed_line[0] != '1' && trimmed_line[0] != '0')
-		{
-			free(map_line);
-			map_line = trimmed_line;
-		}
-		else
-			free(trimmed_line);
-		ret = check_map_searching_2(cub3d, map_line, lock, y);
+		ret = process_line(cub3d, map_line, lock, y);
 		if (ret == -1)
 			return (-1);
 		else if (ret == 1)
 			continue ;
-		i++;
-		free(map_line);
 		map_line = get_next_line((*cub3d)->fd);
 	}
 	return (0);

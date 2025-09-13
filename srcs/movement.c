@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/overlay.h"
+#include "../includes/cub3d.h"
 #include <math.h>
 
 void	move_fwd_back(t_data *d, double ms)
@@ -18,7 +18,6 @@ void	move_fwd_back(t_data *d, double ms)
 	double	nx;
 	double	ny;
 
-	// ms = 0.04;
 	if (d->act_fwd)
 	{
 		nx = d->pos_x + d->dir_x * ms;

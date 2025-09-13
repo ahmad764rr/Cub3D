@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/overlay.h"
+#include "../includes/cub3d.h"
 #include <math.h>
 
 static int	pick_tex_id(t_cast *c)
@@ -50,7 +50,7 @@ static void	setup_slice(t_data *d, t_cast *c, t_slice *s)
 	s->tex_pos = (s->draw_start - (d->win_h / 2) + s->h / 2.0) * s->step;
 }
 
-static void	draw_slice(t_data *d, t_cast *c, t_slice *s, int col)
+static void	draw_slice(t_data *d, t_slice *s, int col)
 {
 	int				y;
 	int				tex_y;
@@ -76,7 +76,7 @@ void	draw_slice_store_hit(t_data *d, t_cast *c, int col)
 	t_slice	s;
 
 	setup_slice(d, c, &s);
-	draw_slice(d, c, &s, col);
+	draw_slice(d, &s, col);
 }
 
 void	cast_and_draw_column(t_data *d, int col)

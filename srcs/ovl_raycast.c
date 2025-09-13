@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-#include "../includes/overlay.h"
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>

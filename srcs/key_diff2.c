@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/overlay.h"
+#include "../includes/cub3d.h"
 
 int	is_key_up(int kc)
 {

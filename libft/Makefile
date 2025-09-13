@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fPIC
+CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
 ARFLAGS = rcs
 SRCS = ft_toupper.c ft_tolower.c ft_isalpha.c ft_memset.c ft_bzero.c ft_atoi.c ft_isdigit.c \

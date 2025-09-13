@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/overlay.h"
+#include "../includes/cub3d.h"
 #include <math.h>
 
 int	key_press(int kc, t_data *d)

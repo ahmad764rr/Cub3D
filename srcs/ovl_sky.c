@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/overlay.h"
+#include "../includes/cub3d.h"
 
 void	draw_sky_floor(t_data *d)
 {

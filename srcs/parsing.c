@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:49:09 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/04 11:53:11 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/13 15:33:51 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	read_file(t_cub3d **cub3d)
 		free_map_points(*cub3d);
 		return (-1);
 	}
-	printf("Parsing completed successfully.\n");
+	write (1, "Parsing completed successfully.\n", 33);
 	return (0);
 }
 

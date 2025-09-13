@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   spwan.c                                             :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,31 +12,41 @@
 
 #include "../includes/cub3d.h"
 
-void	init_player_camera(t_data *d)
+void	set_dir(t_data *d, double dx, double dy)
 {
-	d->pitch = 0;
-	d->pos_x = d->c3d->player.map_x + 0.5;
-	d->pos_y = d->c3d->player.map_y + 0.5;
-	d->dir_x = 0.0;
-	d->dir_y = 0.0;
-	d->plane_x = 0;
-	d->plane_y = 0.0;
-	apply_spawn_orientation(d);
+	d->dir_x = dx;
+	d->dir_y = dy;
 }
 
-int	init_gfx(t_data *d)
+void	set_plane(t_data *d, double px, double py)
 {
-	d->mlx = mlx_init();
-	if (!d->mlx)
-		return (handle_error(ERO_MLX_INIT), 1);
-	d->win = mlx_new_window(d->mlx, d->win_w, d->win_h, "cub3d");
-	if (!d->win)
-		return (handle_error(ERO_MLX_WIN), 1);
-	d->img = mlx_new_image(d->mlx, d->win_w, d->win_h);
-	if (!d->img)
-		return (handle_error(ERO_MLX_IMG), 1);
-	d->addr = mlx_get_data_addr(d->img, &d->bpp, &d->line_len, &d->endian);
-	if (!d->addr)
-		return (handle_error(ERO_MLX_ADDR), 1);
-	return (0);
+	d->plane_x = px;
+	d->plane_y = py;
+}
+
+void	apply_spawn_orientation(t_data *d)
+{
+	double	pl;
+
+	pl = 0.66;
+	if (d->c3d->spawn == 'N')
+	{
+		set_dir(d, 0.0, -1.0);
+		set_plane(d, pl, 0.0);
+	}
+	else if (d->c3d->spawn == 'S')
+	{
+		set_dir(d, 0.0, 1.0);
+		set_plane(d, -pl, 0.0);
+	}
+	else if (d->c3d->spawn == 'E')
+	{
+		set_dir(d, 1.0, 0.0);
+		set_plane(d, 0.0, pl);
+	}
+	else if (d->c3d->spawn == 'W')
+	{
+		set_dir(d, -1.0, 0.0);
+		set_plane(d, 0.0, -pl);
+	}
 }

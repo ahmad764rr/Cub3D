@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-#include "../includes/overlay.h"
 #include <stdlib.h>
 
 static int	alloc_c3d(t_cub3d **c3d)
@@ -39,8 +38,6 @@ static int	setup_game(t_data *d, t_cub3d *c3d, char *path)
 	if (init_gfx(d))
 		return (1);
 	if (init_textures(d))
-		return (1);
-	if (alloc_ray_buffers(d))
 		return (1);
 	return (0);
 }

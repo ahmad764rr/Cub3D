@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/overlay.h"
+#include "../includes/cub3d.h"
 
 void	put_pixel(t_data *d, int x, int y, unsigned int color)
 {

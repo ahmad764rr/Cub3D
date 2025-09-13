@@ -1,6 +1,6 @@
 # ─── Variables ────────────────────────────────────────────────────────────────
 CC        := cc
-CFLAGS    := -g -I includes
+CFLAGS    := -g -I includes -Wall -Werror -Wextra
 
 MLXDIR    := ./minilibx-linux
 MLX       := $(MLXDIR)/libmlx.a
@@ -35,6 +35,10 @@ SRCS := \
  	ovl_raycast.c		\
  	ovl_raycast2.c		\
 	utils_texture.c \
+	helper.c\
+	helpp.c \
+	spwan.c \
+	help2.c\
 	texture.c			\
 	render_frame.c		\
 	init.c

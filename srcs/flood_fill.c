@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 18:08:17 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/02 16:55:16 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/13 15:34:04 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	setup_flood_fill(t_cub3d *cub3d)
 			cub3d))
 	{
 		free_2d_array(cub3d->map.visited, cub3d->map.map_height);
-		printf(ERO_CLOSED_MAP);
+		write(1, ERO_CLOSED_MAP, ft_strlen(ERO_CLOSED_MAP));
 		return (-1);
 	}
 	free_2d_array(cub3d->map.visited, cub3d->map.map_height);
