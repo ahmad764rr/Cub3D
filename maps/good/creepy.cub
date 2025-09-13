@@ -1,7 +1,7 @@
-NO textures/simonkraft/respawn_anchor_side0.png
-EA textures/simonkraft/respawn_anchor_side2.png
-SO textures/simonkraft/respawn_anchor_side4.png
-WE textures/simonkraft/respawn_anchor_side3.png
+NO  textures/simonkraft/eagle.xpm
+SO  textures/simonkraft/eagle.xpm   
+WE  textures/simonkraft/eagle.xpm
+EA  textures/simonkraft/eagle.xpm
 
 C 35,19,73
 F 15,6,40
@@ -13,7 +13,7 @@ F 15,6,40
 111000000000111
 110000000000011
 100001111100001
-110D0011100D011
+11000011100D011
 111000010000111
 111100000001111
 111110000011111

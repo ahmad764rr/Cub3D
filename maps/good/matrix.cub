@@ -1,7 +1,7 @@
-NO textures/matrix.png
-SO textures/matrix.png
-WE textures/matrix.png
-EA textures/matrix.png
+NO  textures/simonkraft/eagle.xpm
+SO  textures/simonkraft/eagle.xpm   
+WE  textures/simonkraft/eagle.xpm
+EA  textures/simonkraft/eagle.xpm
 
 F 0,0,0
 C 0,0,0

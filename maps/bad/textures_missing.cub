@@ -1,6 +1,7 @@
-SO textures/test/south.png
-WE textures/test/west.png
-EA textures/test/east.png
+NO  textures/simonkraft/eagle.xpm
+SO  textures/simonkraft/eagle.xpm   
+WE  textures/simonkraft/eagle.xpm
+EA  textures/simonkraft/eagle.xpm
 
 F 20,20,20
 C 200,200,200

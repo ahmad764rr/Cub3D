@@ -1,10 +1,10 @@
 F 76,76,76
 C 99,99,99
 
-NO textures/simonkraft/cobblestone.png
-SO textures/simonkraft/cobblestone_01.png
-WE textures/simonkraft/mossy_cobblestone1.png
-EA textures/simonkraft/cobblestone_02.png
+NO  textures/simonkraft/eagle.xpm
+SO  textures/simonkraft/eagle.xpm   
+WE  textures/simonkraft/eagle.xpm
+EA  textures/simonkraft/eagle.xpm
 
 1111111111111111111
 10W1001001001000001

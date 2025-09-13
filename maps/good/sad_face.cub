@@ -1,7 +1,7 @@
-NO textures/simonkraft/soul_sand.png
-SO textures/simonkraft/soul_soil_01.png
-WE textures/simonkraft/soul_soil.png
-EA textures/simonkraft/soul_sand.png
+NO  textures/simonkraft/eagle.xpm
+SO  textures/simonkraft/eagle.xpm   
+WE  textures/simonkraft/eagle.xpm
+EA  textures/simonkraft/eagle.xpm
 
 C 53,41,34
 F 45,33,27

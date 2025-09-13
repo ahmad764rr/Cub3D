@@ -1,10 +1,10 @@
 F 139,99,58
 C 171,154,137
 
-NO textures/simonkraft/bookshelf.png
-SO textures/simonkraft/bookshelf_01.png
-WE textures/simonkraft/bookshelf_02.png
-EA textures/simonkraft/bookshelf_03.png
+NO  textures/simonkraft/eagle.xpm
+SO  textures/simonkraft/eagle.xpm   
+WE  textures/simonkraft/eagle.xpm
+EA  textures/simonkraft/eagle.xpm
 
 1111111111111111111
 1001001001001001001
