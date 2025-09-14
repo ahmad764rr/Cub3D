@@ -10,7 +10,7 @@ LDFLAGS   := -Llibft/printf -lftprintf \
               -Llibft       -lft      \
               $(LIBS)
 
-NAME      := cub3d
+NAME      := cub3D
 SRC_DIR   := srcs
 OBJ_DIR   := includes/build
 

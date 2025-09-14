@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:49:09 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/13 16:03:25 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/14 20:28:47 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	read_file(t_cub3d **cub3d)
 		free_texture(*cub3d);
 		free_map_points(*cub3d);
 		handle_error(ERO_MAP);
+		close((*cub3d)->fd);
 		return (-1);
 	}
 	close((*cub3d)->fd);
@@ -93,15 +94,13 @@ int	read_file(t_cub3d **cub3d)
 		free_map_points(*cub3d);
 		return (-1);
 	}
-	write (1, "Parsing completed successfully.\n", 33);
+	write(1, "Parsing completed successfully.\n", 33);
 	return (0);
 }
 
 int	parsing_manager(t_cub3d **cub3d)
 {
 	if (open_file_manager(cub3d) == -1)
-		return (-1);
-	if (open_file(cub3d) == -1)
 		return (-1);
 	if (read_file(cub3d) == -1)
 		return (-1);

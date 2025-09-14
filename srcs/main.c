@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/13 16:03:54 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/14 13:55:46 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	cleanup_and_exit(t_data *d, t_cub3d *c3d, int code)
 	}
 	if (c3d)
 	{
+		if (c3d && c3d->fd >= 0)
+			close(c3d->fd);
 		free_texture(c3d);
 		free_map_points(c3d);
 		free(c3d);
