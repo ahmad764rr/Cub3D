@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setting_data.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 21:08:29 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 19:33:43 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/15 16:14:00 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,27 +88,27 @@ void	init_cub3d(t_cub3d *cub3d, char *arg)
 
 void	set_color_data(int value, t_cub3d **cub3d, int which)
 {
-	static int	i;
-	static int	j;
+	static int	floor_i = 0;
+	static int	ceil_i = 0;
 
 	if (which == 'F')
 	{
-		if (i == 0)
+		if (floor_i == 0)
 			(*cub3d)->map.color_floor.r = value;
-		else if (i == 1)
+		else if (floor_i == 1)
 			(*cub3d)->map.color_floor.g = value;
-		else if (i == 2)
+		else if (floor_i == 2)
 			(*cub3d)->map.color_floor.b = value;
-		i++;
+		floor_i++;
 	}
 	else if (which == 'C')
 	{
-		if (j == 0)
+		if (ceil_i == 0)
 			(*cub3d)->map.color_ceiling.r = value;
-		else if (j == 1)
+		else if (ceil_i == 1)
 			(*cub3d)->map.color_ceiling.g = value;
-		else if (j == 2)
+		else if (ceil_i == 2)
 			(*cub3d)->map.color_ceiling.b = value;
-		j++;
+		ceil_i++;
 	}
 }
