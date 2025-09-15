@@ -3,15 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 12:00:00 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 19:31:43 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/15 16:15:58 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 #include <math.h>
+
+static void	move_strafe(t_data *d, double ms)
+{
+	double	nx;
+	double	ny;
+
+	if (d->act_left)
+	{
+		nx = d->pos_x - d->plane_x * ms;
+		ny = d->pos_y - d->plane_y * ms;
+		if (d->c3d->point[(int)d->pos_y][(int)nx].access == 0)
+			d->pos_x = nx;
+		if (d->c3d->point[(int)ny][(int)d->pos_x].access == 0)
+			d->pos_y = ny;
+	}
+	if (d->act_right)
+	{
+		nx = d->pos_x + d->plane_x * ms;
+		ny = d->pos_y + d->plane_y * ms;
+		if (d->c3d->point[(int)d->pos_y][(int)nx].access == 0)
+			d->pos_x = nx;
+		if (d->c3d->point[(int)ny][(int)d->pos_x].access == 0)
+			d->pos_y = ny;
+	}
+}
 
 void	move_fwd_back(t_data *d, double ms)
 {
@@ -65,5 +90,6 @@ void	move_player(t_data *d, double dt)
 	ms = dt * 5.0;
 	rs = dt * 3.0;
 	move_fwd_back(d, ms);
+	move_strafe(d, ms);
 	rotate_dir_plane(d, rs);
 }
