@@ -6,24 +6,29 @@
 /*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:55:24 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 10:48:01 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/15 16:03:42 by ahramada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 #include <math.h>
 
-static int	pick_tex_id(t_cast *c)
+static int pick_tex_id(t_cast *c)
 {
-	if (c->side == 0)
-	{
-		if (c->rx > 0)
-			return (2);
-		return (3);
-	}
-	if (c->ry > 0)
-		return (1);
-	return (0);
+    if (c->side == 0)
+    {
+        if (c->rx > 0)
+            return 3;   
+        else
+            return 2;
+    }
+    else
+    {
+        if (c->ry > 0)
+            return 1;  
+        else
+            return 0;
+    }
 }
 
 static void	setup_slice(t_data *d, t_cast *c, t_slice *s)
@@ -46,6 +51,11 @@ static void	setup_slice(t_data *d, t_cast *c, t_slice *s)
 		wall_x = d->pos_x + c->perp * c->rx;
 	wall_x -= floor(wall_x);
 	s->tex_x = (int)(wall_x * (double)s->tex->width);
+	if (c->side == 0 && c->rx < 0)       
+    	s->tex_x = s->tex->width - s->tex_x - 1;
+	if (c->side == 1 && c->ry > 0)       
+    	s->tex_x = s->tex->width - s->tex_x - 1;
+
 	s->step = (double)s->tex->height / (double)s->h;
 	s->tex_pos = (s->draw_start - (d->win_h / 2) + s->h / 2.0) * s->step;
 }
