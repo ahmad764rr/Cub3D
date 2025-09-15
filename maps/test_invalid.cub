@@ -1,12 +1,13 @@
-NO textures/simonkraft/wet_sponge.png
-SO textures/simonkraft/wet_sponge.png
-WE textures/simonkraft/wet_sponge.png
-EA textures/simonkraft/wet_sponge.png
+NO  textures/NSEW/S.xpm
+SO  textures/NSEW/W.xpm  
+WE  textures/NSEW/W.xpm
+EA  textures/NSEW/W.xpm
 F 220,100,0
 C 225,30,0
 
 111111111
+11111001
 100000001
-100N00001
-100000000
-111111111
+ 101S00001
+100101 001
+11111 111

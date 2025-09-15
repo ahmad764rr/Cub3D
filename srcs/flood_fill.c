@@ -24,7 +24,7 @@ int	flood_fill(t_map *map, int x, int y, t_cub3d *cub3d)
 	if (is_out_of_bounds(x, y, map))
 		return (0);
 	if (cub3d->point[y][x].access == 1 || cub3d->point[y][x].access == 3
-		|| map->visited[y][x])
+		|| cub3d->point[y][x].access == 4 || map->visited[y][x])
 		return (1);
 	map->visited[y][x] = 1;
 	result = 1;

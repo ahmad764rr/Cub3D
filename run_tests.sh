@@ -20,9 +20,9 @@ fi
 for file in $(find "$dir" -type f -name "*.cub"); do
     echo "Testing: $file"
     if [ "$use_valgrind" = "yes" ]; then
-        valgrind ./cub3d "$file"
+        valgrind ./cub3D "$file"
     else
-        ./cub3d "$file"
+        ./cub3D "$file"
     fi
     echo "---------------------------------"
 done

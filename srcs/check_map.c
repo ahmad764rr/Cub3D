@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:05:30 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/12 20:04:52 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/15 21:04:18 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,7 @@ int	check_map(t_cub3d **cub3d)
 		return (-1);
 	}
 	(*cub3d)->map.map_height = y;
+	if (check_map_boundaries(cub3d) == -1)
+		return (-1);
 	return (0);
 }

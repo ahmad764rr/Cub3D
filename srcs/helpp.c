@@ -15,14 +15,22 @@
 void	fill_line_points(t_cub3d **cub3d, char *line, int y, int size)
 {
 	int	x;
+	int	locked_unlock_on[2];
 
-	x = 0;
+	fill_line_points_lock(line, locked_unlock_on, &x);
 	while (line[x])
 	{
-		if (line[x] == ' ')
+		if (x == locked_unlock_on[1])
+			locked_unlock_on[0] = 0;
+		if (line[x] == '1' || line[x] == '0')
+			locked_unlock_on[0] = 1;
+		if (line[x] == ' ' && locked_unlock_on[0] && y != 0
+			&& y != (*cub3d)->map.map_height - 1)
 			(*cub3d)->point[y][x].access = 0;
-		else if (line[x] == 'N' || line[x] == 'E'
-			|| line[x] == 'S' || line[x] == 'W')
+		else if (line[x] == ' ')
+			(*cub3d)->point[y][x].access = 4;
+		else if (line[x] == 'N' || line[x] == 'E' || line[x] == 'S'
+			|| line[x] == 'W')
 			(*cub3d)->point[y][x].access = 0;
 		else
 			(*cub3d)->point[y][x].access = line[x] - '0';
