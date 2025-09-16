@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:00:04 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/15 20:47:29 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/14 20:50:29 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	check_name(t_cub3d *cub3d)
 		close(fd);
 	while (arg[i])
 		i++;
-	if (arg[i - 1] != 'b' || arg[i - 2] != 'u'
-		||arg[i - 3] != 'c' || arg[i - 4] != '.')
+	if (arg[i - 1] != 'b' || arg[i - 2] != 'u' || arg[i - 3] != 'c' || arg[i
+			- 4] != '.')
 	{
 		cub3d->flag = 1;
 		close(cub3d->fd);

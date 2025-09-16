@@ -6,7 +6,7 @@
 /*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:51:38 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/15 21:03:09 by nqasem           ###   ########.fr       */
+/*   Updated: 2025/09/13 15:43:37 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,9 +268,6 @@ void					set_dir(t_data *d, double dx, double dy);
 void					free_map_points(t_cub3d *cub3d);
 int						handle_locked_map(t_cub3d **cub3d, char *map_line,
 							int *y);
-void					fill_line_points_lock(char *line,
-							int unlocked_on[2], int *x);
-int						check_map_boundaries(t_cub3d **cub3d);
 int						handle_unlocked_map(char *map_line, int *lock);
 int						check_map_condtion(t_cub3d **cub3d, char *map_line,
 							int *lock, int *y);

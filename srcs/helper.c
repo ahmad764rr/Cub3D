@@ -12,24 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-void	fill_line_points_lock(char *line, int unlocked_on[2], int *x)
-{
-	int	length;
-
-	*x = 0;
-	unlocked_on[0] = 0;
-	unlocked_on[1] = -1;
-	length = ft_strlen(line);
-	while (length--)
-	{
-		if (line[length] == '1' || line[length] == '0')
-		{
-			unlocked_on[1] = length;
-			break ;
-		}
-	}
-}
-
 void	free_map_points(t_cub3d *cub3d)
 {
 	int	i;
@@ -68,7 +50,8 @@ int	handle_locked_map(t_cub3d **cub3d, char *map_line, int *y)
 
 int	handle_unlocked_map(char *map_line, int *lock)
 {
-	if (ft_strncmp(map_line, "1", 1) == 0 || ft_strncmp(map_line, "0", 1) == 0
+	if (ft_strncmp(map_line, "1", 1) == 0
+		|| ft_strncmp(map_line, "0", 1) == 0
 		|| ft_strncmp(map_line, " ", 1) == 0)
 	{
 		(*lock) = 1;

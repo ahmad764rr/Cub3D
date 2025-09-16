@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahramada <ahramada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nqasem <nqasem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:49:09 by nqasem            #+#    #+#             */
-/*   Updated: 2025/09/15 16:04:09 by ahramada         ###   ########.fr       */
+/*   Updated: 2025/09/14 20:28:47 by nqasem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int	get_map_dimensions(t_cub3d **cub3d, char *line)
 {
+	int		i;
 	int		width;
 	char	*temp;
 
+	i = 0;
 	width = 0;
 	temp = ft_strtrim(line, " \t\n\r");
 	if (!temp)
